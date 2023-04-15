@@ -3,8 +3,374 @@ generator client {
 }
 
 datasource db {
-  provider = "mysql"
-  url = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
+model User {
+  id                   Int                    @unique @default(autoincrement())
+  name                 String
+  nickname             String                 @unique
+  avatar               String?
+  redCrown             Boolean                @default(false)
+  greenCrown           Boolean                @default(false)
+  blueCrown            Boolean                @default(false)
+  yelloCrown           Boolean                @default(false)
+  password             String
+  email                String                 @unique
+  pronouns             PronounType?
+  bio                  String?
+  links                String?
+  location             String?
+  language             String?
+  Asks                 Ask[]                  @relation(name: "writtenBy")
+  Answers              Ask[]                  @relation(name: "answeredBy")
+  MadeVotes            PublicVote[]
+  VotedVotes           PublicVoteWithUser[]
+  ReceivedOffers       Offer[]                @relation(name: "sent")
+  SentOffers           Offer[]                @relation(name: "made")
+  CommentsOnAsk        CommentOnAsk[]
+  CommentsOnPublicVote CommentOnPublicVote[]
+  CommentsOnOffer      CommentOnOffer[]
+  MadeTags             Tag[]
+  TagsToAsk            TagToAsk[]
+  TagsToPublicVote     TagToPublicVote[]
+  TagsToOffer          TagToOffer[]
+  Reactions            Reaction[]
+  ReactionsOnAsk       ReactionOnAsk[]
+  ReactionOnPublicVote ReactionOnPublicVote[]
+  ReactionsOnOffer     ReactionOnOffer[]
+  Followings           Follow[]               @relation(name: "following")
+  Followers            Follow[]               @relation(name: "followed")
+  bornAt               DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt()
+
+  @@index([id])
+  @@index([nickname])
+}
+
+model Ask {
+  id           Int             @unique @default(autoincrement())
+  contents     AskContent[]
+  writtenBy    User            @relation(name: "writtenBy", fields: [writtenById], references: [id])
+  writtenById  Int
+  answeredBy   User            @relation(name: "answeredBy", fields: [answeredById], references: [id])
+  answeredById Int
+  comments     CommentOnAsk[]
+  tags         TagToAsk[]
+  reactions    ReactionOnAsk[]
+  askedAt      DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt()
+
+  @@index([id])
+  @@index([writtenById])
+  @@index([answeredById])
+}
+
+model AskContent {
+  id        Int      @unique @default(autoincrement())
+  story     String   @db.LongText
+  isAsker   Boolean
+  ask       Ask      @relation(fields: [askId], references: [id])
+  askId     Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+
+  @@index([id])
+  @@index([askId])
+}
+
+model PublicVote {
+  id          Int                    @unique @default(autoincrement())
+  title       String                 @db.MediumText
+  description String?                @db.LongText
+  type        PublicVoteType
+  content     String
+  coverImage  String?
+  madeBy      User                   @relation(fields: [madeById], references: [id])
+  madeById    Int
+  votedBy     PublicVoteWithUser[]
+  comments    CommentOnPublicVote[]
+  tags        TagToPublicVote[]
+  reactions   ReactionOnPublicVote[]
+  startedAt   DateTime               @default(now())
+  endAt       DateTime
+  updatedAt   DateTime               @updatedAt()
+
+  @@index([id])
+  @@index([madeById])
+}
+
+model PublicVoteWithUser {
+  id           Int        @unique @default(autoincrement())
+  answer       String
+  user         User       @relation(fields: [userId], references: [id])
+  userId       Int
+  publicVote   PublicVote @relation(fields: [publicVoteId], references: [id])
+  publicVoteId Int
+  votedAt      DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt()
+
+  @@index([id])
+  @@index([userId])
+  @@index([publicVoteId])
+}
+
+model Offer {
+  id         Int               @unique @default(autoincrement())
+  isPrivate  Boolean           @default(true)
+  title      String            @db.MediumText
+  content    String
+  coverImage String?
+  startTime  DateTime          @default(now())
+  endTime    DateTime          @default(now())
+  where      String
+  madeBy     User              @relation(name: "made", fields: [madeById], references: [id])
+  madeById   Int
+  sentTo     User              @relation(name: "sent", fields: [sendToId], references: [id])
+  sendToId   Int
+  comments   CommentOnOffer[]
+  tags       TagToOffer[]
+  reactions  ReactionOnOffer[]
+  offerredAt DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt()
+
+  @@index([id])
+  @@index([madeById])
+  @@index([sendToId])
+}
+
+model CommentOnAsk {
+  id            Int      @unique @default(autoincrement())
+  content       String   @db.MediumText
+  commentedBy   User     @relation(fields: [commentedById], references: [id])
+  commentedById Int
+  commentedOn   Ask      @relation(fields: [commentedOnId], references: [id])
+  commentedOnId Int
+  commentedAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt()
+
+  @@index([id])
+  @@index([commentedById])
+  @@index([commentedOnId])
+}
+
+model CommentOnPublicVote {
+  id            Int        @unique @default(autoincrement())
+  content       String     @db.MediumText
+  commentedBy   User       @relation(fields: [commentedById], references: [id])
+  commentedById Int
+  commentedOn   PublicVote @relation(fields: [commentedOnId], references: [id])
+  commentedOnId Int
+  commentedAt   DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt()
+
+  @@index([id])
+  @@index([commentedById])
+  @@index([commentedOnId])
+}
+
+model CommentOnOffer {
+  id            Int      @unique @default(autoincrement())
+  content       String   @db.MediumText
+  commentedBy   User     @relation(fields: [commentedById], references: [id])
+  commentedById Int
+  commentedOn   Offer    @relation(fields: [commentedOnId], references: [id])
+  commentedOnId Int
+  commentedAt   DateTime @default(now())
+  updatedAt     DateTime @updatedAt()
+
+  @@index([id])
+  @@index([commentedById])
+  @@index([commentedOnId])
+}
+
+model Reaction {
+  id                    Int                    @unique @default(autoincrement())
+  // https://stackoverflow.com/questions/18862256/how-to-detect-emoji-using-javascript
+  type                  String                 @db.TinyText
+  reactedBy             User                   @relation(fields: [reactedById], references: [id])
+  reactedById           Int
+  reactionsOnAsk        ReactionOnAsk[]
+  reactionsOnPublicVote ReactionOnPublicVote[]
+  reactionsOnOffer      ReactionOnOffer[]
+  reactedAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt()
+
+  @@index([id])
+  @@index([reactedById])
+}
+
+model ReactionOnAsk {
+  id          Int      @unique @default(autoincrement())
+  reactedBy   User     @relation(fields: [reactedById], references: [id])
+  reactedById Int
+  reaction    Reaction @relation(fields: [reactionId], references: [id])
+  reactionId  Int
+  reactedOn   Ask      @relation(fields: [reactedOnId], references: [id])
+  reactedOnId Int
+  reactedAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+
+  @@index([id])
+  @@index([reactedById])
+  @@index([reactionId])
+  @@index([reactedOnId])
+}
+
+model ReactionOnPublicVote {
+  id          Int        @unique @default(autoincrement())
+  reactedBy   User       @relation(fields: [reactedById], references: [id])
+  reactedById Int
+  reaction    Reaction   @relation(fields: [reactionId], references: [id])
+  reactionId  Int
+  reactedOn   PublicVote @relation(fields: [reactedOnId], references: [id])
+  reactedOnId Int
+  reactedAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt()
+
+  @@index([id])
+  @@index([reactedById])
+  @@index([reactionId])
+  @@index([reactedOnId])
+}
+
+model ReactionOnOffer {
+  id          Int      @unique @default(autoincrement())
+  reactedBy   User     @relation(fields: [reactedById], references: [id])
+  reactedById Int
+  reaction    Reaction @relation(fields: [reactionId], references: [id])
+  reactionId  Int
+  reactedOn   Offer    @relation(fields: [reactedOnId], references: [id])
+  reactedOnId Int
+  reactedAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+
+  @@index([id])
+  @@index([reactedById])
+  @@index([reactionId])
+  @@index([reactedOnId])
+}
+
+model Tag {
+  id             Int               @unique @default(autoincrement())
+  name           String
+  madeBy         User              @relation(fields: [madeById], references: [id])
+  madeById       Int
+  forAsks        TagToAsk[]
+  forPublicVotes TagToPublicVote[]
+  forOffers      TagToOffer[]
+  taggedAt       DateTime          @default(now())
+  updatedAt      DateTime          @updatedAt()
+
+  @@index([id])
+  @@index([madeById])
+}
+
+model TagToAsk {
+  id            Int      @unique @default(autoincrement())
+  tag           Tag      @relation(fields: [tagId], references: [id])
+  tagId         Int
+  attachedBy    User     @relation(fields: [attachedById], references: [id])
+  attachedById  Int
+  attachedAsk   Ask      @relation(fields: [attachedAskId], references: [id])
+  attachedAskId Int
+  taggedAt      DateTime @default(now())
+  updatedAt     DateTime @updatedAt()
+
+  @@index([id])
+  @@index([tagId])
+  @@index([attachedById])
+  @@index([attachedAskId])
+}
+
+model TagToPublicVote {
+  id                   Int        @unique @default(autoincrement())
+  tag                  Tag        @relation(fields: [tagId], references: [id])
+  tagId                Int
+  attachedBy           User       @relation(fields: [attachedById], references: [id])
+  attachedById         Int
+  attachedPublicVote   PublicVote @relation(fields: [attachedPublicVoteId], references: [id])
+  attachedPublicVoteId Int
+  taggedAt             DateTime   @default(now())
+  updatedAt            DateTime   @updatedAt()
+
+  @@index([id])
+  @@index([tagId])
+  @@index([attachedById])
+  @@index([attachedPublicVoteId])
+}
+
+model TagToOffer {
+  id              Int      @unique @default(autoincrement())
+  tag             Tag      @relation(fields: [tagId], references: [id])
+  tagId           Int
+  attachedBy      User     @relation(fields: [attachedById], references: [id])
+  attachedById    Int
+  attachedOffer   Offer    @relation(fields: [attachedOfferId], references: [id])
+  attachedOfferId Int
+  taggedAt        DateTime @default(now())
+  updatedAt       DateTime @updatedAt()
+
+  @@index([id])
+  @@index([tagId])
+  @@index([attachedById])
+  @@index([attachedOfferId])
+}
+
+model Follow {
+  id          Int      @unique @default(autoincrement())
+  following   User     @relation(name: "following", fields: [followingId], references: [id])
+  followingId Int
+  followed    User     @relation(name: "followed", fields: [followedId], references: [id])
+  followedId  Int
+  followedAt  DateTime @default(now())
+  updatedAt   DateTime @updatedAt()
+
+  @@index([id])
+  @@index([followingId])
+  @@index([followedId])
+}
+
+model Notification {
+  id           Int              @unique @default(autoincrement())
+  hasBennRead  Boolean
+  linkTo       String
+  helpfulImage String?
+  notification String           @db.MediumText
+  type         NotificationType
+  notifiedAt   DateTime         @default(now())
+  readAt       DateTime?
+  updatedAt    DateTime         @updatedAt()
+
+  @@index([id])
+}
+
+enum UserType {
+  BASIC
+  GROUP
+}
+
+enum PublicVoteType {
+  ANSWER
+  SELECTION
+  AMOUNT
+}
+
+enum NotificationType {
+  USER
+  PUBLIC_VOTE
+  OFFER
+  COMMENT
+  REACTION
+  CROWN
+}
+
+enum PronounType {
+  NO
+  HE
+  SHE
+  THEY
+  ETC
+}
