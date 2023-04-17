@@ -18,6 +18,7 @@
     "paths": {
       "@pages/*": ["./pages/*"],
       "@components/*": ["./components/*"],
+      "@rellyship/*": ["./components/RellyShipComponents/*"],
       "@libs/*": ["./libs/*"],
       "@styles/*": ["./styles/*"]
     }

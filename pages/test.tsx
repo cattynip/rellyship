@@ -1,13 +1,13 @@
 import { NextPage } from "next";
-import RellyShipHeading from "@components/RellyShipHeadings";
-import RellyShipDescription from "@components/RellyShipDescription";
-import RellyShipInput from "@components/RellyShipInput";
-import RellyShipLabel from "@components/RellyShipLabel";
+import RellyShipHeading from "@rellyship/RellyShipHeadings";
+import RellyShipDescription from "@rellyship/RellyShipDescription";
+import RellyShipInput from "@rellyship/RellyShipInput";
+import RellyShipLabel from "@rellyship/RellyShipLabel";
 import RellyShipTestLayout from "@components/layouts/RellyShipTestLayout";
-import RellyShipAnchor from "@components/RellyShipAnchor";
-import RellyShipModal from "@components/RellyShipModal";
+import RellyShipAnchor from "@rellyship/RellyShipAnchor";
+import RellyShipModal from "@rellyship/RellyShipModal";
+import RellyShipButton from "@rellyship/RellyShipButton";
 import { useState } from "react";
-import RellyShipButton from "@components/RellyShipButton";
 
 const TestPage: NextPage = () => {
   const [modalShowing, setModalShowing] = useState<boolean>(false);
