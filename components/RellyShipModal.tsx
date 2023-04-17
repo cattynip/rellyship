@@ -1,16 +1,13 @@
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence, motion } from "framer-motion";
-import RellyShipButton, { IRellyShipButtonProps } from "./RellyShipButton";
 import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
-import { exit } from "process";
 
 interface IRellyShipModalProps extends IRellyShipComponent {
   title: string;
   showingVar: boolean;
   cancelBtn?: boolean;
   fallback: () => void;
-  buttons: IRellyShipButtonProps[];
   children: React.ReactNode;
 }
 
@@ -19,7 +16,6 @@ const RellyShipModal = ({
   showingVar,
   cancelBtn,
   fallback,
-  buttons,
   children,
   extraClassName
 }: IRellyShipModalProps) => {

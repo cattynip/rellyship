@@ -20,16 +20,6 @@ const TestPage: NextPage = () => {
           showingVar={modalShowing}
           cancelBtn
           fallback={() => setModalShowing(false)}
-          buttons={[
-            {
-              content: "Cancel",
-              mood: "normal"
-            },
-            {
-              content: "Submit",
-              mood: "positive"
-            }
-          ]}
         >
           <p>Helllo World</p>
         </RellyShipModal>
