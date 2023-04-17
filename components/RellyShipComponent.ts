@@ -1,4 +1,4 @@
-import joinClass from "@libs/joinClasses";
+import joinClass from "@libs/client/joinClasses";
 
 interface IRellyShipComponent {
   extraClassName?: string;
