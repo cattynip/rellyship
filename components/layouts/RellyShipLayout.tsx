@@ -1,17 +1,22 @@
+import Header from "@components/Header";
 import Head from "next/head";
 
 interface IRellyShipLayoutProps {
+  isUserIn: boolean;
   children: React.ReactNode;
 }
 
-const RellyShipLayout = ({ children }: IRellyShipLayoutProps) => {
+const RellyShipLayout = ({ isUserIn, children }: IRellyShipLayoutProps) => {
   return (
     <div>
       <Head>
         <link href="/logo.png" rel="icon" />
         <title>RellyShip</title>
       </Head>
-      <main className="dark:mix-blend-darken dark:text-zinc-50 mix-blend-lighten text-black">
+
+      <Header isUserIn={isUserIn} />
+
+      <main className="dark:mix-blend-darken dark:text-zinc-50 mix-blend-lighten text-black pt-14">
         {children}
       </main>
     </div>

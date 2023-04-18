@@ -1,11 +1,13 @@
+import { UseFormRegisterReturn } from "react-hook-form";
 import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
-import { HTMLInputTypeAttribute } from "react";
+import { HTMLAttributes, HTMLInputTypeAttribute } from "react";
 
 interface IRellyShipInputProps extends IRellyShipComponent {
   placeholder: string;
   error?: boolean;
   inputType?: HTMLInputTypeAttribute;
   id?: string;
+  formRegister?: UseFormRegisterReturn;
 }
 
 const RellyShipInput = ({
@@ -13,8 +15,9 @@ const RellyShipInput = ({
   error,
   inputType,
   id,
+  formRegister,
   extraClassName
-}: IRellyShipInputProps) => {
+}: IRellyShipInputProps & HTMLAttributes<HTMLInputElement>) => {
   return (
     <input
       className={joinClass([
@@ -25,6 +28,7 @@ const RellyShipInput = ({
       placeholder={placeholder}
       type={inputType ? inputType : "text"}
       id={id ? id : undefined}
+      {...formRegister}
     />
   );
 };

@@ -10,7 +10,7 @@ config.autoAddCss = false;
 function App({ Component, pageProps }: AppProps) {
   return (
     <ThemeProvider defaultTheme="dark" attribute="class" enableSystem>
-      <RellyShipLayout>
+      <RellyShipLayout isUserIn={true}>
         <Component {...pageProps} />
       </RellyShipLayout>
     </ThemeProvider>
