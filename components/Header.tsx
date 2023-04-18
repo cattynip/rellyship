@@ -37,7 +37,7 @@ const Header = ({ isUserIn }: IHeaderProps) => {
   const onSearchSubmit: SubmitHandler<ISearchForm> = data => console.log(data);
 
   return (
-    <nav className="w-full m-0 p-0 backdrop-blur-md bg-gradient-to-b from-black to-transparent fixed top-0 left-0 flex items-center justify-between px-24 border-b border-b-gray-700">
+    <nav className="w-full m-0 p-0 backdrop-blur-md bg-gradient-to-b from-black to-transparent absolute top-0 left-0 z-10 flex items-center justify-between px-24 border-b border-b-gray-700">
       <div className="flex items-center">
         <HeaderElement linkTo={"/"}>
           <Image src={Logo} alt="RellyShipLogo" width={30} height={30} />
