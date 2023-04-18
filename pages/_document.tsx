@@ -18,9 +18,8 @@ function RellyShipDocument() {
         <meta property="og:site_name" content="RellyShip" />
         <meta name="og:title" content="RellyShip" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="/logo-long.png" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link href="/logo.png" rel="icon" />
+        <meta property="og:image" content="/logo-best.png" />
+        <link href="/logo.svg" rel="icon" />
         <link
           href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
           rel="stylesheet"

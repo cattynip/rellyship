@@ -20,7 +20,8 @@
       "@components/*": ["./components/*"],
       "@rellyship/*": ["./components/RellyShipComponents/*"],
       "@libs/*": ["./libs/*"],
-      "@styles/*": ["./styles/*"]
+      "@styles/*": ["./styles/*"],
+      "@public/*": ["./public/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
