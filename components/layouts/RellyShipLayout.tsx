@@ -16,7 +16,7 @@ const RellyShipLayout = ({ isUserIn, children }: IRellyShipLayoutProps) => {
 
       <Header isUserIn={isUserIn} />
 
-      <main className="dark:mix-blend-darken dark:text-zinc-50 mix-blend-lighten text-black pt-14">
+      <main className="dark:mix-blend-darken dark:text-zinc-50 mix-blend-lighten text-black pt-28 w-full max-w-5xl mx-auto px-5">
         {children}
       </main>
     </div>

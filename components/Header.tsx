@@ -44,7 +44,7 @@ const Header = ({ isUserIn }: IHeaderProps) => {
             <Image src={Logo} alt="RellyShipLogo" width={30} height={30} />
           </HeaderElement>
         </div>
-        <div className="hidden items-center md:flex">
+        <div className="flex items-center">
           <HeaderElement extraClassName="hidden lg:flex">
             <form onSubmit={handleSubmit(onSearchSubmit)} className="relative">
               <RellyShipInput
@@ -67,15 +67,20 @@ const Header = ({ isUserIn }: IHeaderProps) => {
               </label>
             </form>
           </HeaderElement>
-          <HeaderElement linkTo={"/asks/ask"} text="Ask" />
-          <HeaderElement linkTo={"/public-votes/open"} text="Public Vote" />
-          <HeaderElement linkTo={"/offers/offer"} text="Offer" />
+          <div className="hidden items-center sm:flex">
+            <HeaderElement linkTo={"/asks/ask"} text="Ask" />
+            <HeaderElement linkTo={"/public-votes/open"} text="Public Vote" />
+            <HeaderElement linkTo={"/offers/offer"} text="Offer" />
+          </div>
         </div>
       </div>
       <div className="hidden md:block">
         {isUserIn ? (
           <div className="flex items-center">
-            <HeaderElement linkTo={"/notifications"}>
+            <HeaderElement
+              linkTo={"/notifications"}
+              extraClassName="hidden sm:block"
+            >
               <FontAwesomeIcon icon={"bell"} size="1x" />
             </HeaderElement>
             <HeaderElement linkTo={"/profile"} extraClassName="ml-0">
