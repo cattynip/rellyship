@@ -23,24 +23,45 @@ const TagsSearcher = ({ fallback }: ITagsSearcherProps) => {
   const [tags, setTags] = useState<string[]>([]);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const currentValue = event.target.value;
+    const targetValue = event.target.value;
 
-    if (currentValue.endsWith(" ")) {
-      setTags(prev => [...prev, currentValue.trim()]);
-      event.target.value = "";
+    if (targetValue.endsWith(" ")) {
+      // TODO: Add the checker(regex) for the special letter, such as !, @, #, $, %, ^, &, *, (, ).
+
+      const currentValue = targetValue.trim();
+
+      const isSame = tags.find(tagValue => {
+        if (currentValue.toString() === tagValue.toString()) {
+          return true;
+        } else {
+          return false;
+        }
+      });
+
+      if (currentValue.includes("-") || currentValue.includes("@") || isSame) {
+        event.target.value = "";
+      } else {
+        setTags(prev => [...prev, currentValue.trim()]);
+        event.target.value = "";
+      }
     }
   };
 
   const onXMarkCilck = (event: MouseEvent<SVGSVGElement>) => {
-    console.log(event.target);
+    const currentValue =
+      event.currentTarget.parentElement?.children[0].children[1].textContent;
+
+    setTags(prev =>
+      prev.splice(prev.indexOf(currentValue ? currentValue : ""), 1)
+    );
   };
 
   return (
     <div className="border border-gray-500 transition-colors hover:border-white rounded-md pt-3 flex flex-col">
-      <ul className="block px-3.5 pb-3.5">
+      <ul className="block px-3 pb-3">
         {tags.length !== 0 ? (
-          tags.map(tag => (
-            <TagComponent content={tag} key={tag} onClick={onXMarkCilck} />
+          tags.map((tag, tagIdx) => (
+            <TagComponent content={tag} key={tagIdx} onClick={onXMarkCilck} />
           ))
         ) : (
           <RellyShipDescription description="Type the name of the tag and press space bar..." />
