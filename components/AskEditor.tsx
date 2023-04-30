@@ -4,6 +4,7 @@ import IRellyShipComponent, {
   joinClass
 } from "./RellyShipComponents/RellyShipComponent";
 import { motion } from "framer-motion";
+import RellyShipTextArea from "./RellyShipComponents/RellyShipTextArea";
 
 interface IAskEditorProps extends IRellyShipComponent {}
 
@@ -14,25 +15,30 @@ const AskEditor = ({}: IAskEditorProps) => {
 
   return (
     <div className="border rounded-md mt-5 border-gray-700 transition-colors hover:border-white">
-      <ul className="flex items-center justify-start">
-        <AskEditorTab
-          tabName="edit"
-          active={editorMode}
-          onClick={() => setEditorMode("edit")}
-        />
-        <AskEditorTab
-          tabName="preview"
-          active={editorMode}
-          onClick={() => setEditorMode("preview")}
-        />
-        <AskEditorTab
-          tabName="summary"
-          active={editorMode}
-          onClick={() => setEditorMode("summary")}
-        />
-      </ul>
-      <div></div>
-      <div></div>
+      <div>
+        <ul className="flex items-center justify-start border-b border-b-gray-700">
+          <AskEditorTab
+            tabName="edit"
+            active={editorMode}
+            onClick={() => setEditorMode("edit")}
+          />
+          <AskEditorTab
+            tabName="preview"
+            active={editorMode}
+            onClick={() => setEditorMode("preview")}
+          />
+          <AskEditorTab
+            tabName="summary"
+            active={editorMode}
+            onClick={() => setEditorMode("summary")}
+          />
+        </ul>
+      </div>
+      <div>
+        {editorMode === "edit" && <TextEditor />}
+        {editorMode === "preview" && <Previewer />}
+        {editorMode === "summary" && <Summary />}
+      </div>
     </div>
   );
 };
@@ -52,16 +58,19 @@ const AskEditorTab = ({
   return (
     <li
       className={joinClass([
-        "bg-transparent transition-colors hover:bg-gray-300 hover:text-black py-3 px-3 first:border-r first:border-r-gray-700 last:border-x last:border-x-gray-700 relative cursor-pointer",
-        isMatched ? "" : ""
+        "bg-transparent first:border-r first:border-r-gray-700 last:border-x last:border-x-gray-700 relative cursor-pointer"
       ])}
       {...props}
     >
-      {tabName === "edit"
-        ? "Editor"
-        : tabName === "preview"
-        ? "Previewer"
-        : "Summary"}
+      <div className="p-3">
+        <span className="hover:-translate-y-2">
+          {tabName === "edit"
+            ? "Editor"
+            : tabName === "preview"
+            ? "Previewer"
+            : "Summary"}
+        </span>
+      </div>
 
       {isMatched && (
         <motion.div
@@ -69,7 +78,10 @@ const AskEditorTab = ({
             duration: 0.25
           }}
           layoutId="editorTab"
-          className="absolute top-0 left-0 w-full h-full bg-white backdrop-filter flex items-center justify-center"
+          className={joinClass([
+            "absolute top-0 left-0 w-full h-full bg-white backdrop-filter flex items-center justify-center",
+            tabName === "edit" ? "rounded-l-md" : ""
+          ])}
         >
           <AnimatePresence>
             <motion.span
