@@ -46,6 +46,9 @@ const FloatingWindow = ({
               opacity: 0,
               y: 20 + translateYValue
             }}
+            transition={{
+              delay: 1.5
+            }}
           >
             {message}
           </motion.div>

@@ -57,7 +57,7 @@ const Header = ({ isUserIn }: IHeaderProps) => {
                 placeholder="Search..."
                 extraClassName="border-gray-600 w-full"
                 id="search"
-                value={searchQuery}
+                defaultValue={searchQuery}
                 onChange={(event: ChangeEvent<HTMLInputElement>) =>
                   setSearchQuery(event.currentTarget.value)
                 }

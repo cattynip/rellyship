@@ -5,9 +5,9 @@ interface IRellyShipComponent {
   extraClassName?: string;
 }
 
-export interface IRellyShipInputTypeComponent
+export interface IRellyShipInputTypeComponent<T = HTMLInputElement>
   extends IRellyShipComponent,
-    HTMLAttributes<HTMLInputElement> {
+    HTMLAttributes<T> {
   error?: boolean;
   wider?: boolean;
   narrow?: boolean;

@@ -1,4 +1,4 @@
-import { Attributes, HTMLAttributes } from "react";
+import { HTMLAttributes } from "react";
 import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
 import IRellyShipDescription from "@components/RellyShipComponents/RellyShipDescription";
 

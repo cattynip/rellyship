@@ -8,6 +8,7 @@ import Tab from "./AskEditor/tabs";
 import Editor from "./AskEditor/editor";
 import Previewer from "./AskEditor/previewer";
 import Summary from "./AskEditor/summary";
+import { AnimatePresence } from "framer-motion";
 
 interface IAskEditorProps extends IRellyShipInputTypeComponent {
   getContent: (content: string) => void;
@@ -34,7 +35,7 @@ const AskEditor = ({ getContent, getSummary }: IAskEditorProps) => {
   }, [summary]);
 
   return (
-    <div className="border rounded-md mt-2.5 border-gray-700 transition-colors hover:border-white">
+    <div className="border rounded-md mt-2.5 border-gray-700 hover:border-white transition-colors">
       <div>
         <ul className="flex items-center justify-start border-b border-b-gray-700">
           <Tab
@@ -55,11 +56,13 @@ const AskEditor = ({ getContent, getSummary }: IAskEditorProps) => {
         </ul>
       </div>
       <div>
-        {editorMode === "edit" && (
-          <Editor content={content} saveContent={saveContent} />
-        )}
-        {editorMode === "preview" && <Previewer content={content} />}
-        {editorMode === "summary" && <Summary content={content} />}
+        <AnimatePresence>
+          {editorMode === "edit" && (
+            <Editor content={content} saveContent={saveContent} />
+          )}
+          {editorMode === "preview" && <Previewer content={content} />}
+          {editorMode === "summary" && <Summary content={content} />}
+        </AnimatePresence>
       </div>
     </div>
   );
