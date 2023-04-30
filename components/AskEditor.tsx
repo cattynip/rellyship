@@ -12,6 +12,13 @@ type EditorModeType = "edit" | "preview" | "summary";
 
 const AskEditor = ({}: IAskEditorProps) => {
   const [editorMode, setEditorMode] = useState<EditorModeType>("edit");
+  const [content, setContent] = useState<string>("");
+  const [summary, setSummary] = useState<string>("");
+
+  const saveContent = (content: string) => {
+    console.log(content);
+    setContent(content);
+  };
 
   return (
     <div className="border rounded-md mt-5 border-gray-700 transition-colors hover:border-white">
@@ -35,7 +42,9 @@ const AskEditor = ({}: IAskEditorProps) => {
         </ul>
       </div>
       <div>
-        {editorMode === "edit" && <TextEditor />}
+        {editorMode === "edit" && (
+          <TextEditor defaultValue={content} saveContent={saveContent} />
+        )}
         {editorMode === "preview" && <Previewer />}
         {editorMode === "summary" && <Summary />}
       </div>
@@ -107,6 +116,39 @@ const AskEditorTab = ({
         </motion.div>
       )}
     </li>
+  );
+};
+
+interface ITextEditorProps {
+  defaultValue: string;
+  saveContent: (ctx: string) => void;
+}
+
+const TextEditor = ({ defaultValue, saveContent }: ITextEditorProps) => {
+  return (
+    <div className="grid">
+      <RellyShipTextArea
+        defaultValue={defaultValue}
+        onChange={event => saveContent(event.currentTarget.value)}
+        extraClassName="border-none m-0"
+      />
+    </div>
+  );
+};
+
+const Previewer = () => {
+  return (
+    <div>
+      <span>This is a Previewer</span>
+    </div>
+  );
+};
+
+const Summary = () => {
+  return (
+    <div>
+      <span>This is a summary box that is using GPT</span>
+    </div>
   );
 };
 

@@ -1,6 +1,16 @@
+import {
+  ChangeEvent,
+  ChangeEventHandler,
+  HTMLAttributes,
+  useEffect,
+  useRef,
+  useState
+} from "react";
 import { IRellyShipInputTypeComponent, joinClass } from "./RellyShipComponent";
 
 interface IRellyShipTextAreaProps extends IRellyShipInputTypeComponent {
+  autoScrollControl?: boolean;
+  onChange?: ChangeEventHandler<HTMLTextAreaElement>;
   rows?: number;
   cols?: number;
 }
@@ -9,11 +19,32 @@ const RellyShipTextArea = ({
   placeholder,
   error,
   id,
+  autoScrollControl,
   rows,
   cols,
+  onChange,
   formRegister,
-  extraClassName
-}: IRellyShipTextAreaProps) => {
+  extraClassName,
+  ...props
+}: IRellyShipTextAreaProps & HTMLAttributes<HTMLTextAreaElement>) => {
+  const [textAreaHeight, setTextAreaHeight] = useState<string>("auto");
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  const handleTextAreaChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextAreaHeight(event.target.scrollHeight + "px");
+
+    if (onChange) {
+      onChange(event);
+      return;
+    } else {
+      return;
+    }
+  };
+
+  useEffect(() => {
+    setTextAreaHeight(textareaRef.current?.scrollHeight + "px");
+  }, []);
+
   return (
     <textarea
       className={joinClass([
@@ -23,9 +54,15 @@ const RellyShipTextArea = ({
       ])}
       placeholder={placeholder}
       id={id ? id : undefined}
-      {...formRegister}
       rows={rows ? rows : 1}
       cols={cols ? cols : 10}
+      ref={textareaRef}
+      onChange={handleTextAreaChange}
+      style={{
+        height: textAreaHeight
+      }}
+      {...formRegister}
+      {...props}
     />
   );
 };
