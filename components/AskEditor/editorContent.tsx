@@ -3,7 +3,7 @@ interface IEditorContent {
 }
 
 const EditorContent = ({ children }: IEditorContent) => {
-  return <div className="py-3.5 px-5">{children}</div>;
+  return <div className="py-3.5 px-5 min-h-[24px]">{children}</div>;
 };
 
 export default EditorContent;

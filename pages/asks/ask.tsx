@@ -1,29 +1,43 @@
+import type { NextPage } from "next";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+
+// TODO: Make them dynamic import
+
+import UserSearcher from "@components/UserSearcher";
+import TagsSearcher from "@components/TagSearcher";
 import AskEditor from "@components/AskEditor";
 import FloatingWindow from "@components/FloatingWindow";
 import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
 import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
 import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
 import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
-import TagsSearcher from "@components/TagSearcher";
-import UserSearcher from "@components/UserSearcher";
-import { NextPage } from "next";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
 
 interface IAskForm {
   username: string;
   tags?: string[];
   question: string;
   content: string;
+  summary?: string;
 }
 
 const Ask: NextPage = () => {
-  const { register, handleSubmit } = useForm<IAskForm>();
+  const [loading, _setLoading] = useState<boolean>(false);
+  const { register, handleSubmit, watch } = useForm<IAskForm>();
+
+  watch();
+
+  const onValid = (askForm: IAskForm) => {
+    console.log(askForm);
+  };
 
   return (
     <div className="max-w-3xl mx-auto">
       <RellyShipHeading text="Ask" extraClassName="text-3xl" />
-      <form className="border-t border-gray-400 mt-5 pt-5 space-y-4">
+      <form
+        onSubmit={handleSubmit(onValid)}
+        className="border-t border-gray-400 mt-5 pt-5 space-y-4"
+      >
         <div>
           <FloatingWindow message="Who do you want to ask to? Enter the user name. It will show you the information of the user.">
             <RellyShipLabel
@@ -38,7 +52,16 @@ const Ask: NextPage = () => {
               </div>
             </RellyShipLabel>
           </FloatingWindow>
-          <UserSearcher error={false} />
+          <UserSearcher
+            error={false}
+            formRegister={register("username", {
+              required: {
+                value: true,
+                message:
+                  "You have to put the name of the user that you want to ask to."
+              }
+            })}
+          />
         </div>
         <div>
           <FloatingWindow message="What tags do you want to attach? These tags will show this question to the list.">
@@ -53,11 +76,7 @@ const Ask: NextPage = () => {
               </div>
             </RellyShipLabel>
           </FloatingWindow>
-          <TagsSearcher
-            fallback={() => {
-              console.log("This ");
-            }}
-          />
+          <TagsSearcher fallback={() => {}} />
         </div>
         <div>
           <FloatingWindow message="This is a question that will be shown up as a representative question.">
@@ -75,15 +94,29 @@ const Ask: NextPage = () => {
             placeholder="My question is that..."
             id="question"
             extraClassName="w-full"
+            removeHoverAnimation
+            formRegister={register("question", {
+              required: {
+                value: true,
+                message: "You have to put a question."
+              }
+            })}
             wider
           />
-          <AskEditor />
+          <AskEditor
+            formRegister={register("content", {
+              required: {
+                value: true,
+                message: "You have to put a content."
+              }
+            })}
+          />
         </div>
         <div className="flex items-center justify-center pt-6">
           <RellyShipButton
             content="Ask"
             mood="specially positive"
-            loading="Asking..."
+            loading={loading}
           />
         </div>
       </form>

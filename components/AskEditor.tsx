@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import IRellyShipComponent from "./RellyShipComponents/RellyShipComponent";
+import IRellyShipComponent, {
+  IRellyShipInputTypeComponent
+} from "./RellyShipComponents/RellyShipComponent";
 import React from "react";
 
 // TODO: Make them dynamic import
@@ -8,12 +10,15 @@ import Tab from "./AskEditor/tabs";
 import Editor from "./AskEditor/editor";
 import Previewer from "./AskEditor/previewer";
 import Summary from "./AskEditor/summary";
+import { UseFormRegisterReturn } from "react-hook-form";
 
-interface IAskEditorProps extends IRellyShipComponent {}
+interface IAskEditorProps extends IRellyShipInputTypeComponent {
+  formRegister: UseFormRegisterReturn;
+}
 
 export type EditorModeType = "edit" | "preview" | "summary";
 
-const AskEditor = ({}: IAskEditorProps) => {
+const AskEditor = ({ formRegister }: IAskEditorProps) => {
   const [editorMode, setEditorMode] = useState<EditorModeType>("edit");
   const [content, setContent] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
@@ -45,10 +50,10 @@ const AskEditor = ({}: IAskEditorProps) => {
       </div>
       <div>
         {editorMode === "edit" && (
-          <Editor defaultValue={content} saveContent={saveContent} />
+          <Editor content={content} saveContent={saveContent} />
         )}
         {editorMode === "preview" && <Previewer content={content} />}
-        {editorMode === "summary" && <Summary />}
+        {editorMode === "summary" && <Summary content={content} />}
       </div>
     </div>
   );

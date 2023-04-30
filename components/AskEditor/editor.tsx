@@ -1,19 +1,24 @@
 import RellyShipTextArea from "@components/RellyShipComponents/RellyShipTextArea";
 import EditorContent from "./editorContent";
+import { IRellyShipInputTypeComponent } from "@components/RellyShipComponents/RellyShipComponent";
+import { ChangeEvent } from "react";
 
-interface ITextEditorProps {
-  defaultValue: string;
+interface ITextEditorProps extends IRellyShipInputTypeComponent {
+  content: string;
   saveContent: (ctx: string) => void;
 }
 
-const Editor = ({ defaultValue, saveContent }: ITextEditorProps) => {
+const Editor = ({ content, saveContent }: ITextEditorProps) => {
   return (
     <EditorContent>
       <div className="flex">
         <RellyShipTextArea
-          defaultValue={defaultValue}
-          onChange={event => saveContent(event.currentTarget.value)}
-          extraClassName="border-none m-0 pt-0 pb-0 pl-0 pr-0"
+          defaultValue={content}
+          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
+            saveContent(event.currentTarget.value);
+          }}
+          extraClassName="border-none m-0"
+          narrow
         />
       </div>
     </EditorContent>

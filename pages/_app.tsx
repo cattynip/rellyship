@@ -1,4 +1,5 @@
 import "@styles/globals.css";
+import "highlight.js/styles/github-dark.css";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import type { AppProps } from "next/app";

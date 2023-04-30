@@ -1,12 +1,14 @@
 import EditorContent from "./editorContent";
 
-interface ISummaryProps {}
+interface ISummaryProps {
+  content: string;
+}
 
-const Summary = ({}: ISummaryProps) => {
+const Summary = ({ content }: ISummaryProps) => {
   // TODO: Implement Summary using CHAT GPT
   return (
     <EditorContent>
-      <div>Summary Part</div>
+      <p>{content}</p>
     </EditorContent>
   );
 };

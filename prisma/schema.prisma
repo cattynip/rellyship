@@ -52,8 +52,8 @@ model User {
 
 model Ask {
   id           Int             @unique @default(autoincrement())
-  question String @db.MediumText
-  summary String? @db.LongText
+  question     String          @db.MediumText
+  summary      String?         @db.LongText
   contents     AskContent[]
   writtenBy    User            @relation(name: "writtenBy", fields: [writtenById], references: [id])
   writtenById  Int

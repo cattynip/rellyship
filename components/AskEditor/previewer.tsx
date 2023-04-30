@@ -20,9 +20,11 @@ interface IPreviewerProps {
 const Previewer = ({ content }: IPreviewerProps) => {
   return (
     <EditorContent>
-      <div className="rounded-b-md block">
+      <div className="rounded-b-md">
         {content === "" && (
-          <RellyShipDescription description="Write something..." />
+          <div className="flex items-center justify-center">
+            <RellyShipDescription description="Write something..." />
+          </div>
         )}
         <Markdown
           options={{
