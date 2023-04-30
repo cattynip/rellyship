@@ -46,7 +46,7 @@ const UserSearcher = ({ formRegister, error }: IUserSearcherProps) => {
 
   return (
     <div className="flex flex-col md:flex-row items-center justify-center h-96">
-      <div className="w-full h-full flex flex-col p-4 items-center justify-center border border-gray-700 rounded-t-lg transition-colors hover:border-white md:rounded-l-lg md:rounded-tr-none sm:flex-row md:flex-col">
+      <div className="w-full h-full flex flex-col p-4 items-center justify-center border border-gray-700 rounded-t-lg md:rounded-l-lg md:rounded-tr-none sm:flex-row md:flex-col">
         <Image
           src={"/me.jpeg"}
           alt="The avatar of the user"
@@ -61,13 +61,14 @@ const UserSearcher = ({ formRegister, error }: IUserSearcherProps) => {
             extraClassName="sm:ml-2"
             placeholder="@username"
             id="who"
+            removeHoverAnimation
             wider
             error={error}
             formRegister={formRegister}
           />
         </div>
       </div>
-      <div className="w-full h-full flex flex-col items-center justify-center p-4 border border-gray-700 rounded-b-lg md:rounded-r-lg md:rounded-bl-none transition-colors hover:border-white">
+      <div className="w-full h-full flex flex-col items-center justify-center p-4 border border-gray-700 rounded-b-lg md:rounded-r-lg md:rounded-bl-none">
         {mode === "blank" ? (
           <RellyShipDescription description="Enter an username" />
         ) : (

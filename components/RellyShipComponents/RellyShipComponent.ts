@@ -11,6 +11,7 @@ export interface IRellyShipInputTypeComponent extends IRellyShipComponent {
   id?: string;
   formRegister?: UseFormRegisterReturn;
   wider?: boolean;
+  removeHoverAnimation?: boolean;
 }
 
 export { joinClass };

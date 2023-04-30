@@ -13,6 +13,7 @@ const RellyShipInput = ({
   formRegister,
   wider,
   extraClassName,
+  removeHoverAnimation = false,
   ...props
 }: IRellyShipInputProps &
   React.DetailedHTMLProps<
@@ -22,7 +23,8 @@ const RellyShipInput = ({
   return (
     <input
       className={joinClass([
-        "bg-transparent border rounded-md border-gray-700 placeholder:text-sm px-3 transition-all placeholder:opacity-1 placeholder:focus:opacity-0 focus:outline-none focus:border-white hover:border-white",
+        "bg-transparent border rounded-md border-gray-700 placeholder:text-sm px-3 transition-all placeholder:opacity-1 placeholder:focus:opacity-0 focus:outline-none focus:border-white",
+        removeHoverAnimation ? "" : "hover:border-white",
         error ? "border-red-700 hover:border-red-700 focus:border-red-500" : "",
         wider ? "py-2" : "py-1",
         extraClassName ? extraClassName : ""

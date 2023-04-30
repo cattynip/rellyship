@@ -71,7 +71,7 @@ const TagsSearcher = ({ fallback }: ITagsSearcherProps) => {
   };
 
   return (
-    <div className="border border-gray-700 hover:border-white rounded-md pt-3 flex flex-col transition-colors">
+    <div className="border border-gray-700 rounded-md pt-3 flex flex-col">
       <ul className="block px-3 pb-3">
         <AnimatePresence mode="sync">
           {tags.length !== 0 ? (
@@ -86,8 +86,9 @@ const TagsSearcher = ({ fallback }: ITagsSearcherProps) => {
       <div>
         <RellyShipInput
           placeholder="#Tags"
-          extraClassName="w-full rounded-none border-b-transparent border-x-transparent"
+          extraClassName="w-full rounded-none "
           wider
+          removeHoverAnimation
           onChange={onInputChange}
         />
       </div>
