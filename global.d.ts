@@ -4,6 +4,7 @@ declare global {
       DATABASE_URL: string;
       SESSION_NAME: string;
       SESSION_PASSWORD: string;
+      OPENAI_API_KEY: string;
     }
   }
 }

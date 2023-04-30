@@ -23,7 +23,7 @@ const withHandler = ({
     }
 
     if (isPrivate) {
-      if (!req.session.user) {
+      if (!req.session?.user) {
         return res.status(401).json({
           ok: false,
           message: "Login"
@@ -39,3 +39,5 @@ const withHandler = ({
     }
   };
 };
+
+export default withHandler;
