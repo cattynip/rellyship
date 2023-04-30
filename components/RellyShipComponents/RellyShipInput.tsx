@@ -1,13 +1,8 @@
-import { UseFormRegisterReturn } from "react-hook-form";
-import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
-import { HTMLAttributes, HTMLInputTypeAttribute } from "react";
+import { IRellyShipInputTypeComponent, joinClass } from "./RellyShipComponent";
+import { HTMLInputTypeAttribute } from "react";
 
-interface IRellyShipInputProps extends IRellyShipComponent {
-  placeholder: string;
-  error?: boolean;
+interface IRellyShipInputProps extends IRellyShipInputTypeComponent {
   inputType?: HTMLInputTypeAttribute;
-  id?: string;
-  formRegister?: UseFormRegisterReturn;
 }
 
 const RellyShipInput = ({
@@ -16,18 +11,26 @@ const RellyShipInput = ({
   inputType,
   id,
   formRegister,
-  extraClassName
-}: IRellyShipInputProps & HTMLAttributes<HTMLInputElement>) => {
+  wider,
+  extraClassName,
+  ...props
+}: IRellyShipInputProps &
+  React.DetailedHTMLProps<
+    React.InputHTMLAttributes<HTMLInputElement>,
+    HTMLInputElement
+  >) => {
   return (
     <input
       className={joinClass([
-        "bg-transparent border rounded-md border-gray-400 py-1 placeholder:text-sm px-3 transition-all placeholder:opacity-1 placeholder:focus:opacity-0 focus:outline-none focus:border-white hover:border-white",
-        error ? "border-red-700 hover:border-red-500 focus:border-red-500" : "",
+        "bg-transparent border rounded-md border-gray-700 placeholder:text-sm px-3 transition-all placeholder:opacity-1 placeholder:focus:opacity-0 focus:outline-none focus:border-white hover:border-white",
+        error ? "border-red-700 hover:border-red-700 focus:border-red-500" : "",
+        wider ? "py-2" : "py-1",
         extraClassName ? extraClassName : ""
       ])}
       placeholder={placeholder}
       type={inputType ? inputType : "text"}
       id={id ? id : undefined}
+      {...props}
       {...formRegister}
     />
   );
