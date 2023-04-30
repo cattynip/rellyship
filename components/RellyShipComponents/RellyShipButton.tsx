@@ -1,4 +1,5 @@
 import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
+import { AnimatePresence, motion } from "framer-motion";
 
 type ButtonMoodType =
   | "normal"
@@ -15,8 +16,9 @@ type ButtonContentSuggestions =
   | "REMOVE";
 
 export interface IRellyShipButtonProps extends IRellyShipComponent {
-  content: string;
+  content: ButtonContentSuggestions | string;
   mood: ButtonMoodType;
+  loading?: boolean;
   id?: string;
   fallback?: (id: string) => void;
 }
@@ -24,12 +26,13 @@ export interface IRellyShipButtonProps extends IRellyShipComponent {
 const RellyShipButton = ({
   content,
   mood,
+  loading,
   extraClassName
 }: IRellyShipButtonProps) => {
   return (
     <button
       className={joinClass([
-        "p-2 px-3 focus:outline-none rounded-sm transition-all border",
+        "p-1 px-4 w-20 focus:outline-none rounded-md transition-all border overflow-hidden flex items-center justify-center",
         mood === "normal"
           ? "border-gray-400 bg-black focus:bg-white focus:text-black focus:border-white hover:border-white"
           : mood === "positive"
@@ -44,7 +47,26 @@ const RellyShipButton = ({
         extraClassName ? extraClassName : ""
       ])}
     >
-      {content}
+      <AnimatePresence>
+        {loading && (
+          <motion.div
+            initial={{
+              opacity: 0
+            }}
+            animate={{
+              rotateZ: 360,
+              opacity: 1
+            }}
+            transition={{
+              ease: "linear",
+              repeat: Infinity,
+              duration: 0.2
+            }}
+            className="w-6 h-6 border-t border-l border-whtie rounded-full"
+          ></motion.div>
+        )}
+      </AnimatePresence>
+      {!loading && <span>{content}</span>}
     </button>
   );
 };
