@@ -37,7 +37,7 @@ const Header = ({ isUserIn }: IHeaderProps) => {
   const onSearchSubmit: SubmitHandler<ISearchForm> = data => console.log(data);
 
   return (
-    <nav className="w-full m-0 p-0 backdrop-blur-md bg-gradient-to-b from-black to-transparent fixed top-0 left-0 z-10 flex items-center justify-around px-24 border-b border-b-gray-700 lg:justify-between">
+    <nav className="w-full m-0 p-0 backdrop-blur-sm bg-gradient-to-b from-black to-transparent fixed top-0 left-0 z-10 flex items-center justify-around px-24 border-b border-b-gray-700 lg:justify-between">
       <div className="flex items-center justify-around">
         <div>
           <HeaderElement linkTo={"/"}>

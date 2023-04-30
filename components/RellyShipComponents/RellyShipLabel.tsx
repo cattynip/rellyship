@@ -22,7 +22,7 @@ const RellyShipLabel = ({
   return (
     <label
       className={joinClass([
-        "flex items-center justify-between pb-2.5",
+        "flex items-center justify-between pb-4",
         extraClassName ? extraClassName : ""
       ])}
       htmlFor={inputFor ? inputFor : undefined}

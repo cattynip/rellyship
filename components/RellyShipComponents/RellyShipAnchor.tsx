@@ -23,7 +23,7 @@ const RellyShipAnchor = ({
         className={joinClass([
           "cursor-pointer",
           colorDecoration
-            ? "text-purple-500 underline underline-offset-4 focus:underline-offset-1 hover:underline-offset-1 transition-all hover:text-purple-600 border border-transparent focus:border-white p-1 focus:outline-none"
+            ? "text-purple-400 underline underline-offset-4 focus:underline-offset-1 hover:underline-offset-1 transition-all hover:text-purple-500 border border-transparent focus:border-white p-1 focus:outline-none"
             : "",
           extraClassName ? extraClassName : ""
         ])}
