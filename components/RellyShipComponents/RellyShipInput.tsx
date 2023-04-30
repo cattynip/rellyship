@@ -6,20 +6,13 @@ interface IRellyShipInputProps extends IRellyShipInputTypeComponent {
 }
 
 const RellyShipInput = ({
-  placeholder,
   error,
-  inputType,
-  id,
-  formRegister,
   wider,
-  extraClassName,
+  narrow,
   removeHoverAnimation = false,
+  extraClassName,
   ...props
-}: IRellyShipInputProps &
-  React.DetailedHTMLProps<
-    React.InputHTMLAttributes<HTMLInputElement>,
-    HTMLInputElement
-  >) => {
+}: IRellyShipInputProps) => {
   return (
     <input
       className={joinClass([
@@ -29,11 +22,7 @@ const RellyShipInput = ({
         wider ? "py-2" : "py-1",
         extraClassName ? extraClassName : ""
       ])}
-      placeholder={placeholder}
-      type={inputType ? inputType : "text"}
-      id={id ? id : undefined}
       {...props}
-      {...formRegister}
     />
   );
 };

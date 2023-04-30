@@ -1,7 +1,5 @@
 import { useEffect, useState } from "react";
-import IRellyShipComponent, {
-  IRellyShipInputTypeComponent
-} from "./RellyShipComponents/RellyShipComponent";
+import { IRellyShipInputTypeComponent } from "./RellyShipComponents/RellyShipComponent";
 import React from "react";
 
 // TODO: Make them dynamic import
@@ -10,15 +8,15 @@ import Tab from "./AskEditor/tabs";
 import Editor from "./AskEditor/editor";
 import Previewer from "./AskEditor/previewer";
 import Summary from "./AskEditor/summary";
-import { UseFormRegisterReturn } from "react-hook-form";
 
 interface IAskEditorProps extends IRellyShipInputTypeComponent {
-  formRegister: UseFormRegisterReturn;
+  getContent: (content: string) => void;
+  getSummary: (summary: string) => void;
 }
 
 export type EditorModeType = "edit" | "preview" | "summary";
 
-const AskEditor = ({ formRegister }: IAskEditorProps) => {
+const AskEditor = ({ getContent, getSummary }: IAskEditorProps) => {
   const [editorMode, setEditorMode] = useState<EditorModeType>("edit");
   const [content, setContent] = useState<string>("");
   const [summary, setSummary] = useState<string>("");
@@ -26,6 +24,14 @@ const AskEditor = ({ formRegister }: IAskEditorProps) => {
   const saveContent = (content: string) => {
     setContent(content);
   };
+
+  useEffect(() => {
+    getContent(content);
+  }, [content]);
+
+  useEffect(() => {
+    getSummary(summary);
+  }, [summary]);
 
   return (
     <div className="border rounded-md mt-2.5 border-gray-700 transition-colors hover:border-white">

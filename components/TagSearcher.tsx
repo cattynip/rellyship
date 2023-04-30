@@ -1,4 +1,10 @@
-import { ChangeEvent, HTMLAttributes, MouseEvent, useState } from "react";
+import {
+  ChangeEvent,
+  HTMLAttributes,
+  MouseEvent,
+  useEffect,
+  useState
+} from "react";
 import RellyShipInput from "./RellyShipComponents/RellyShipInput";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
@@ -18,10 +24,10 @@ const FontAwesomeIcon = dynamic(
 );
 
 interface ITagsSearcherProps {
-  fallback: () => void;
+  getContent: (tags: string[]) => void;
 }
 
-const TagsSearcher = ({ fallback }: ITagsSearcherProps) => {
+const TagsSearcher = ({ getContent }: ITagsSearcherProps) => {
   const [tags, setTags] = useState<string[]>([]);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -55,6 +61,10 @@ const TagsSearcher = ({ fallback }: ITagsSearcherProps) => {
       }
     }
   };
+
+  useEffect(() => {
+    getContent(tags);
+  }, [tags]);
 
   const onXMarkCilck = async (event: MouseEvent<SVGSVGElement>) => {
     const currentValue =

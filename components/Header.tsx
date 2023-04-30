@@ -10,8 +10,9 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import dynamic from "next/dynamic";
-import { SubmitHandler, useForm } from "react-hook-form";
 import MyProfile from "@public/me.jpeg";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useRouter } from "next/router";
 
 library.add(faMagnifyingGlass, faBell, faArrowRightToBracket);
 
@@ -32,9 +33,14 @@ interface ISearchForm {
 }
 
 const Header = ({ isUserIn }: IHeaderProps) => {
-  const { register, handleSubmit } = useForm<ISearchForm>();
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const router = useRouter();
 
-  const onSearchSubmit: SubmitHandler<ISearchForm> = data => console.log(data);
+  const onSearchSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+
+    router.push(`/search?q=${searchQuery}`);
+  };
 
   return (
     <nav className="w-full m-0 p-0 backdrop-blur-sm bg-gradient-to-b from-black to-transparent fixed top-0 left-0 z-10 flex items-center justify-around px-24 border-b border-b-gray-700 lg:justify-between">
@@ -46,14 +52,15 @@ const Header = ({ isUserIn }: IHeaderProps) => {
         </div>
         <div className="flex items-center">
           <HeaderElement extraClassName="hidden lg:flex">
-            <form onSubmit={handleSubmit(onSearchSubmit)} className="relative">
+            <form onSubmit={onSearchSubmit} className="relative">
               <RellyShipInput
                 placeholder="Search..."
                 extraClassName="border-gray-600 w-full"
                 id="search"
-                formRegister={register("query", {
-                  required: true
-                })}
+                value={searchQuery}
+                onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                  setSearchQuery(event.currentTarget.value)
+                }
               />
               <label
                 className="absolute top-0 right-1.5 h-full flex items-center justify-center"

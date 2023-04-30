@@ -1,6 +1,5 @@
 import type { NextPage } from "next";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
 // TODO: Make them dynamic import
 
@@ -14,28 +13,28 @@ import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
 import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
 
 interface IAskForm {
-  username: string;
+  username?: string;
   tags?: string[];
-  question: string;
-  content: string;
+  question?: string;
+  content?: string;
   summary?: string;
 }
 
 const Ask: NextPage = () => {
+  const [formData, setFormData] = useState<IAskForm>({});
   const [loading, _setLoading] = useState<boolean>(false);
-  const { register, handleSubmit, watch } = useForm<IAskForm>();
 
-  watch();
+  const onValid = (event: FormEvent) => {
+    event.preventDefault();
 
-  const onValid = (askForm: IAskForm) => {
-    console.log(askForm);
+    // TODO: Send an API
   };
 
   return (
     <div className="max-w-3xl mx-auto">
       <RellyShipHeading text="Ask" extraClassName="text-3xl" />
       <form
-        onSubmit={handleSubmit(onValid)}
+        onSubmit={onValid}
         className="border-t border-gray-400 mt-5 pt-5 space-y-4"
       >
         <div>
@@ -53,14 +52,12 @@ const Ask: NextPage = () => {
             </RellyShipLabel>
           </FloatingWindow>
           <UserSearcher
-            error={false}
-            formRegister={register("username", {
-              required: {
-                value: true,
-                message:
-                  "You have to put the name of the user that you want to ask to."
-              }
-            })}
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setFormData(prev => ({
+                ...prev,
+                username: event.target.value
+              }))
+            }
           />
         </div>
         <div>
@@ -76,7 +73,14 @@ const Ask: NextPage = () => {
               </div>
             </RellyShipLabel>
           </FloatingWindow>
-          <TagsSearcher fallback={() => {}} />
+          <TagsSearcher
+            getContent={(tags: string[]) => {
+              setFormData(prev => ({
+                ...prev,
+                tags: tags
+              }));
+            }}
+          />
         </div>
         <div>
           <FloatingWindow message="This is a question that will be shown up as a representative question.">
@@ -95,21 +99,21 @@ const Ask: NextPage = () => {
             id="question"
             extraClassName="w-full"
             removeHoverAnimation
-            formRegister={register("question", {
-              required: {
-                value: true,
-                message: "You have to put a question."
-              }
-            })}
             wider
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setFormData(prev => ({
+                ...prev,
+                question: event.target.value
+              }))
+            }
           />
           <AskEditor
-            formRegister={register("content", {
-              required: {
-                value: true,
-                message: "You have to put a content."
-              }
-            })}
+            getContent={(content: string) =>
+              setFormData(prev => ({ ...prev, content: content }))
+            }
+            getSummary={(summary: string) =>
+              setFormData(prev => ({ ...prev, summary: summary }))
+            }
           />
         </div>
         <div className="flex items-center justify-center pt-6">

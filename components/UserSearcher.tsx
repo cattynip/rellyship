@@ -1,17 +1,11 @@
-import {
-  ChangeEvent,
-  FocusEvent,
-  FocusEventHandler,
-  useEffect,
-  useState
-} from "react";
+import { useEffect, useState } from "react";
 import RellyShipInput from "./RellyShipComponents/RellyShipInput";
 import Image from "next/image";
 import UserAt from "./UserAt";
 import RellyShipDescription from "./RellyShipComponents/RellyShipDescription";
 import { IRellyShipInputTypeComponent } from "./RellyShipComponents/RellyShipComponent";
 
-interface IUserSearcherProps extends IRellyShipInputTypeComponent {}
+interface IUserSearcherProps {}
 
 type UserSearcherMode = "blank" | "searching_users" | "showing_user";
 
@@ -37,7 +31,9 @@ interface IUserSearcherModeProps {
   data: SearchingUsersProps;
 }
 
-const UserSearcher = ({ formRegister, error }: IUserSearcherProps) => {
+const UserSearcher = ({
+  ...props
+}: IUserSearcherProps & IRellyShipInputTypeComponent) => {
   const [mode, setMode] = useState<UserSearcherMode>("blank");
 
   useEffect(() => {
@@ -63,8 +59,7 @@ const UserSearcher = ({ formRegister, error }: IUserSearcherProps) => {
             id="who"
             removeHoverAnimation
             wider
-            error={error}
-            formRegister={formRegister}
+            {...props}
           />
         </div>
       </div>
