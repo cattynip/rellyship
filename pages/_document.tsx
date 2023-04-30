@@ -25,7 +25,8 @@ function RellyShipDocument() {
           rel="stylesheet"
         />
       </Head>
-      <body>
+
+      <body className="dark:text-zinc-50 dark:bg-zinc-900">
         <Main />
         <NextScript />
       </body>
