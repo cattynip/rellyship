@@ -96,6 +96,7 @@ const TagsSearcher = ({ getContent }: ITagsSearcherProps) => {
       <div>
         <RellyShipInput
           placeholder="#Tags"
+          id="tags"
           extraClassName="w-full rounded-none "
           wider
           removeHoverAnimation

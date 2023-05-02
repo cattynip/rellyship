@@ -17,7 +17,7 @@ const RellyShipLayout = ({ isUserIn, children }: IRellyShipLayoutProps) => {
 
       <Header isUserIn={isUserIn} />
 
-      <main className="pt-24 w-full max-w-5xl mx-auto px-5">{children}</main>
+      <main className="pt-24 w-full max-w-4xl mx-auto px-5">{children}</main>
 
       <Footer />
     </div>
