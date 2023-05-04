@@ -8,7 +8,7 @@ import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
 import TagsSearcher from "@components/TagSearcher";
 import { AnimatePresence } from "framer-motion";
 import type { NextPage } from "next";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 export type TVote = "answer" | "selection" | "amount";
 
@@ -41,11 +41,7 @@ const OpenPublicVote: NextPage = () => {
   });
 
   const [loading, _setLoading] = useState<boolean>(false);
-  const [active, setActive] = useState<TVote>("answer");
-
-  useEffect(() => {
-    // console.log(active);
-  }, [active]);
+  const [active, setActive] = useState<TVote>("selection");
 
   const onValid = (event: FormEvent) => {
     event.preventDefault();
@@ -109,7 +105,7 @@ const OpenPublicVote: NextPage = () => {
           <RellyShipLabel inputFor="answertype" required>
             <span className="text-xl font-bold">Answer Type</span>
           </RellyShipLabel>
-          <div>
+          <div className="pb-1 pt-4 flex items-center justify-around">
             <AnswerTypeTopBar
               content="answer"
               active={active}
@@ -126,10 +122,14 @@ const OpenPublicVote: NextPage = () => {
               onClick={() => onTopBarClick("amount")}
             />
           </div>
-          <div>
+          <div className="pt-4">
             <AnimatePresence>
               {active === "selection" && (
-                <AnswerSelectionInput getContent={() => {}} />
+                <AnswerSelectionInput
+                  getContent={(selections: TSelections) => {
+                    setSelections(selections);
+                  }}
+                />
               )}
               {active === "amount" && (
                 <AnswerAmountInput getContent={() => {}} />
