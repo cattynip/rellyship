@@ -97,7 +97,7 @@ const TagsSearcher = ({ getContent }: ITagsSearcherProps) => {
         <RellyShipInput
           placeholder="#Tags"
           id="tags"
-          extraClassName="w-full rounded-none border-x-transparent border-b-transparent"
+          extraClassName="w-full rounded-none border-x-transparent border-b-transparent rounded-b-md"
           wider
           removeHoverAnimation
           onChange={onInputChange}

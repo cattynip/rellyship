@@ -51,29 +51,6 @@ const Header = ({ isUserIn }: IHeaderProps) => {
           </HeaderElement>
         </div>
         <div className="flex items-center">
-          <HeaderElement extraClassName="hidden lg:flex">
-            <form onSubmit={onSearchSubmit} className="relative">
-              <RellyShipInput
-                placeholder="Search..."
-                extraClassName="border-gray-600 w-full"
-                id="search"
-                defaultValue={searchQuery}
-                onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                  setSearchQuery(event.currentTarget.value)
-                }
-              />
-              <label
-                className="absolute top-0 right-1.5 h-full flex items-center justify-center"
-                htmlFor="search"
-              >
-                <FontAwesomeIcon
-                  icon={"magnifying-glass"}
-                  size="xs"
-                  className="border border-gray-600 p-1 rounded-md bg-black"
-                />
-              </label>
-            </form>
-          </HeaderElement>
           <div className="hidden items-center sm:flex">
             <HeaderElement linkTo={"/asks/ask"} text="Ask" />
             <HeaderElement linkTo={"/public-votes/open"} text="Vote" />
@@ -81,7 +58,30 @@ const Header = ({ isUserIn }: IHeaderProps) => {
           </div>
         </div>
       </div>
-      <div className="hidden md:block">
+      <div className="hidden md:flex items-center justify-center">
+        <HeaderElement extraClassName="hidden lg:flex">
+          <form onSubmit={onSearchSubmit} className="relative">
+            <RellyShipInput
+              placeholder="Search..."
+              extraClassName="border-gray-600 w-[150px] focus:lg:w-[260px] focus:md:w-[400px]"
+              id="search"
+              defaultValue={searchQuery}
+              onChange={(event: ChangeEvent<HTMLInputElement>) =>
+                setSearchQuery(event.currentTarget.value)
+              }
+            />
+            <label
+              className="absolute top-0 right-1.5 h-full flex items-center justify-center"
+              htmlFor="search"
+            >
+              <FontAwesomeIcon
+                icon={"magnifying-glass"}
+                size="xs"
+                className="border border-gray-600 p-1 rounded-md bg-black"
+              />
+            </label>
+          </form>
+        </HeaderElement>
         {isUserIn ? (
           <div className="flex items-center">
             <HeaderElement
