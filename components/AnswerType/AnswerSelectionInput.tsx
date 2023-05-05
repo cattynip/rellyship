@@ -53,17 +53,20 @@ const AnswerSelectionInput = ({ getContent }: IAnswerSelectionInputProps) => {
                   });
 
                   if (!isSame) {
-                    getContent([
+                    const returnedSelection = [
                       ...selections.slice(0, index),
                       changedValue,
                       ...selections.slice(index + 1)
-                    ]);
-                    setSelections([
-                      ...selections.slice(0, index),
-                      changedValue,
-                      ...selections.slice(index + 1)
-                    ]);
+                    ];
+
+                    getContent(returnedSelection);
+                    setSelections(returnedSelection);
                   }
+                } else {
+                  const returnedSelection = [...selections].splice(index, 1);
+
+                  getContent(returnedSelection);
+                  setSelections(returnedSelection);
                 }
               }}
             />
