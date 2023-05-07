@@ -44,7 +44,7 @@ const OpenPublicVote: NextPage = () => {
   });
 
   const [loading, _setLoading] = useState<boolean>(false);
-  const [active, setActive] = useState<TVote>("amount");
+  const [active, setActive] = useState<TVote>("answer");
 
   const onValid = (event: FormEvent) => {
     event.preventDefault();
