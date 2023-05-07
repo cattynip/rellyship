@@ -1,16 +1,15 @@
 import { IRellyShipInputTypeComponent, joinClass } from "./RellyShipComponent";
-import { HTMLInputTypeAttribute } from "react";
 
-interface IRellyShipInputProps extends IRellyShipInputTypeComponent {
-  inputType?: HTMLInputTypeAttribute;
-}
+interface IRellyShipInputProps extends IRellyShipInputTypeComponent {}
 
 const RellyShipInput = ({
   error,
   wider,
   narrow,
   removeHoverAnimation = false,
+  link,
   extraClassName,
+  type,
   ...props
 }: IRellyShipInputProps) => {
   return (
@@ -22,6 +21,8 @@ const RellyShipInput = ({
         wider ? "py-2" : "py-1",
         extraClassName ? extraClassName : ""
       ])}
+      id={link ? link : ""}
+      type={type ? type : "text"}
       {...props}
     />
   );

@@ -7,7 +7,9 @@ interface IRellyShipLabelProps extends IRellyShipComponent {
   description?: string;
   children?: React.ReactNode;
   required?: boolean;
-  inputFor?: string;
+  link?: string;
+  reverse?: boolean;
+  narrower?: boolean;
 }
 
 const RellyShipLabel = ({
@@ -15,17 +17,21 @@ const RellyShipLabel = ({
   description,
   children,
   required,
-  inputFor,
+  link,
+  reverse,
+  narrower,
   extraClassName,
   ...props
 }: IRellyShipLabelProps & HTMLAttributes<HTMLLabelElement>) => {
   return (
     <label
       className={joinClass([
-        "flex items-center justify-between pb-4",
-        extraClassName ? extraClassName : ""
+        "flex items-center justify-between",
+        extraClassName ? extraClassName : "",
+        reverse ? "flex-row-reverse" : "",
+        narrower ? "p-0" : "pb-4"
       ])}
-      htmlFor={inputFor ? inputFor : undefined}
+      htmlFor={link ? link : undefined}
       {...props}
     >
       {labelContent ? labelContent : children}

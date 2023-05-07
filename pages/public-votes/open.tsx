@@ -1,3 +1,9 @@
+import { AnimatePresence } from "framer-motion";
+import type { NextPage } from "next";
+import { ChangeEvent, FormEvent, useState } from "react";
+
+// TODO: Make them dynamic import
+
 import AnswerAmountInput from "@components/AnswerType/AnswerAmountInput";
 import AnswerSelectionInput from "@components/AnswerType/AnswerSelectionInput";
 import AnswerTypeTopBar from "@components/AnswerType/AnswerTypeTopBar";
@@ -6,9 +12,6 @@ import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings"
 import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
 import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
 import TagsSearcher from "@components/TagSearcher";
-import { AnimatePresence } from "framer-motion";
-import type { NextPage } from "next";
-import { ChangeEvent, FormEvent, useState } from "react";
 
 export type TVote = "answer" | "selection" | "amount";
 
@@ -31,7 +34,7 @@ interface IVoteForm {
 const OpenPublicVote: NextPage = () => {
   const [formData, setFormData] = useState<IVoteForm>({});
 
-  // When it sends an API, the body part will include this part.
+  // When it sends an API, the body part will include this variables, depend on the `active` variable.
   const [selections, setSelections] = useState<TSelections>([]);
   const [amount, setAmount] = useState<TAmount>({
     biggest: 100,
@@ -41,7 +44,7 @@ const OpenPublicVote: NextPage = () => {
   });
 
   const [loading, _setLoading] = useState<boolean>(false);
-  const [active, setActive] = useState<TVote>("selection");
+  const [active, setActive] = useState<TVote>("amount");
 
   const onValid = (event: FormEvent) => {
     event.preventDefault();
@@ -57,16 +60,13 @@ const OpenPublicVote: NextPage = () => {
 
   return (
     <div>
-      <button onClick={() => console.log(formData)}>
-        Click to check the values
-      </button>
       <RellyShipHeading text="Open a Public Vote" extraClassName="text-2xl" />
       <form
         onSubmit={onValid}
         className="border-t border-gray-399 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel inputFor="title" required>
+          <RellyShipLabel link="title" required>
             <span className="text-xl font-bold">Title</span>
           </RellyShipLabel>
           <RellyShipInput
@@ -84,7 +84,7 @@ const OpenPublicVote: NextPage = () => {
           />
         </div>
         <div>
-          <RellyShipLabel inputFor="description">
+          <RellyShipLabel link="description">
             <span className="text-xl font-bold">Description</span>
           </RellyShipLabel>
           <RellyShipInput
@@ -102,7 +102,7 @@ const OpenPublicVote: NextPage = () => {
           />
         </div>
         <div>
-          <RellyShipLabel inputFor="answertype" required>
+          <RellyShipLabel link="answertype" required>
             <span className="text-xl font-bold">Answer Type</span>
           </RellyShipLabel>
           <div className="pb-1 pt-4 flex items-center justify-around">
@@ -132,13 +132,17 @@ const OpenPublicVote: NextPage = () => {
                 />
               )}
               {active === "amount" && (
-                <AnswerAmountInput getContent={() => {}} />
+                <AnswerAmountInput
+                  getContent={content => {
+                    setAmount(content);
+                  }}
+                />
               )}
             </AnimatePresence>
           </div>
         </div>
         <div>
-          <RellyShipLabel inputFor="tags">
+          <RellyShipLabel link="tags">
             <span className="text-xl font-bold">Tags</span>
           </RellyShipLabel>
           <TagsSearcher

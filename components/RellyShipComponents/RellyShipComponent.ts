@@ -1,17 +1,22 @@
 import joinClass from "@libs/client/joinClasses";
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, HTMLInputTypeAttribute } from "react";
 
 interface IRellyShipComponent {
-  extraClassName?: string;
+  extraClassName?: React.ComponentProps<"div">["className"];
 }
 
 export interface IRellyShipInputTypeComponent<T = HTMLInputElement>
   extends IRellyShipComponent,
-    HTMLAttributes<T> {
+    React.DetailedHTMLProps<
+      React.InputHTMLAttributes<HTMLInputElement>,
+      HTMLInputElement
+    > {
   error?: boolean;
   wider?: boolean;
   narrow?: boolean;
   removeHoverAnimation?: boolean;
+  link?: string;
+  type?: HTMLInputTypeAttribute;
 }
 
 export { joinClass };

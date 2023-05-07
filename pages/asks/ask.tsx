@@ -1,5 +1,5 @@
 import type { NextPage } from "next";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 
 // TODO: Make them dynamic import
 
@@ -39,7 +39,7 @@ const Ask: NextPage = () => {
         className="border-t border-gray-400 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel inputFor="who" required>
+          <RellyShipLabel link="who" required>
             <span className="text-xl font-bold">User</span>
           </RellyShipLabel>
           <UserSearcher
@@ -52,7 +52,7 @@ const Ask: NextPage = () => {
           />
         </div>
         <div>
-          <RellyShipLabel inputFor="question" required>
+          <RellyShipLabel link="question" required>
             <span className="text-xl font-bold">Question</span>
           </RellyShipLabel>
           <RellyShipInput
@@ -79,7 +79,7 @@ const Ask: NextPage = () => {
         </div>
         <div>
           <RellyShipLabel
-            inputFor="tags"
+            link="tags"
             description="What tags would you like to tag on this ask?"
           >
             <span className="text-xl font-bold">Tags</span>
