@@ -1,91 +1,104 @@
 import AskEditor from "@components/AskEditor";
-import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
-import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
-import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
-import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
-import TagsSearcher from "@components/TagSearcher";
-import UserSearcher from "@components/UserSearcher";
+import ButtonSet from "@components/RellyShipComponents/RellyShipButton";
+import InputSet from "@components/RellyShipComponents/RellyShipInput";
+import LabelSet from "@components/RellyShipComponents/RellyShipLabel";
 import { NextPage } from "next";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+
+interface IOfferForm {
+  username?: string;
+  tags?: string[];
+  question?: string;
+  content?: string;
+  summary?: string;
+}
 
 const CreateOffer: NextPage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<IOfferForm>({});
 
-  const onValid = (event: FormEvent) => {
+  const onValid = (handedForm: IOfferForm) => {
     console.log(event);
   };
 
   return (
     <div>
-      <RellyShipHeading text="Make an Offer" extraClassName="text-2xl" />
+      <h1 className="text-4xl font-extrabold">Make an Offer</h1>
       <form
-        onSubmit={onValid}
+        onSubmit={handleSubmit(onValid)}
         className="border-t border-gray-399 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="question" required>
-            <span className="text-xl font-bold">Offer</span>
-          </RellyShipLabel>
-          <RellyShipInput
+          <LabelSet.jsxFunction
+            labelContent="Offer"
+            htmlFor="question"
+            required
+          />
+          <InputSet.jsxFunction
             // TODO: Replace `@` to the username
-            placeholder="This is an offer from @"
+            placeholder="This is an offer from..."
             id="question"
-            extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={
-              (event: ChangeEvent<HTMLInputElement>) => console.log(event)
-              // setFormData(prev => ({
-              //   ...prev,
-              //   question: event.target.value
-              // }))
-            }
+            isFormInput
+            register={register("question", {
+              required: {
+                value: true,
+                message: "The quetion is a reuqired field."
+              },
+              minLength: {
+                value: 5,
+                message: "The question should be longer then 5 letters."
+              },
+              maxLength: {
+                value: 40,
+                message: "The question should be shorter than 40 letters."
+              }
+            })}
           />
-          <AskEditor
-            getContent={
-              (content: string) => console.log(content)
-              // setFormData(prev => ({ ...prev, content: content }))
-            }
-            getSummary={
-              (summary: string) => console.log(summary)
-              // setFormData(prev => ({ ...prev, summary: summary }))
-            }
-          />
+          {/* <AskEditor */}
+          {/*   getContent={ */}
+          {/*     (content: string) => console.log(content) */}
+          {/*     // setFormData(prev => ({ ...prev, content: content })) */}
+          {/*   } */}
+          {/*   getSummary={ */}
+          {/*     (summary: string) => console.log(summary) */}
+          {/*     // setFormData(prev => ({ ...prev, summary: summary })) */}
+          {/*   } */}
+          {/* /> */}
         </div>
         <div>
+          <LabelSet.jsxFunction labelContent="User" htmlFor="who" required />
           {/* TODO: the user can search the user, who has a popular crown(the yellow one) */}
-          <RellyShipLabel link="who" required>
-            <span className="text-xl font-bold">User</span>
-          </RellyShipLabel>
-          <UserSearcher
-            onChange={
-              (event: ChangeEvent<HTMLInputElement>) => console.log(event)
-              // setFormData(prev => ({
-              //   ...prev,
-              //   username: event.target.value
-              // }))
-            }
-          />
+          {/* <UserSearcher */}
+          {/*   onChange={ */}
+          {/*     (event: ChangeEvent<HTMLInputElement>) => console.log(event) */}
+          {/*     // setFormData(prev => ({ */}
+          {/*     //   ...prev, */}
+          {/*     //   username: event.target.value */}
+          {/*     // })) */}
+          {/*   } */}
+          {/* /> */}
         </div>
-
         <div>
-          <RellyShipLabel link="tags">
-            <span className="text-xl font-bold">Tags</span>
-          </RellyShipLabel>
-          <TagsSearcher
-            getContent={(tags: string[]) => {
-              // setFormData(prev => ({
-              //   ...prev,
-              //   tags: tags
-              // }));
-            }}
-          />
+          <LabelSet.jsxFunction labelContent="Tags" htmlFor="tags" required />
+          {/* <TagsSearcher */}
+          {/*   getContent={(tags: string[]) => { */}
+          {/* setFormData(prev => ({ */}
+          {/*   ...prev, */}
+          {/*   tags: tags */}
+          {/* })); */}
+          {/*   }} */}
+          {/* /> */}
         </div>
         <div className="flex items-center justify-center pt-5">
-          <RellyShipButton
+          <ButtonSet.jsxFunction
             content="Open"
             mood="specially positive"
-            loading={loading}
+            loading={isSubmitting}
           />
         </div>
       </form>

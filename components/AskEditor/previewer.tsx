@@ -1,5 +1,3 @@
-import RellyShipDescription from "@components/RellyShipComponents/RellyShipDescription";
-
 // TODO: Make them dynamic imports
 
 import Codeblock from "@components/RellyShipMarkdown/Codeblocks";
@@ -12,6 +10,7 @@ import Quote from "@components/RellyShipMarkdown/Quote";
 import Strong from "@components/RellyShipMarkdown/Strong";
 import Anchor from "@components/RellyShipMarkdown/Anchor";
 import EditorContent from "./editorContent";
+import { Description } from "@libs/client/manageClasses";
 
 interface IPreviewerProps {
   content: string;
@@ -23,7 +22,7 @@ const Previewer = ({ content }: IPreviewerProps) => {
       <div className="rounded-b-md">
         {content === "" && (
           <div className="flex items-center justify-center">
-            <RellyShipDescription description="Write something..." />
+            <p className={Description.className}>Write something...</p>
           </div>
         )}
         <Markdown

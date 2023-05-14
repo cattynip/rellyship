@@ -1,23 +1,26 @@
-import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
+import IBasicClassName from "@libs/client/manageClasses";
+import { HTMLAttributes } from "react";
 
-interface IRellyShipDescriptionProps extends IRellyShipComponent {
-  description: string;
-}
-
-const RellyShipDescription = ({
-  description,
-  extraClassName
-}: IRellyShipDescriptionProps) => {
-  return (
-    <p
-      className={joinClass([
-        "text-sm text-gray-400 transition-colors hover:text-white cursor-default",
-        extraClassName ? extraClassName : ""
-      ])}
-    >
-      {description}
-    </p>
-  );
+const DescriptionSet: IBasicClassName<
+  {},
+  { description: string },
+  HTMLAttributes<HTMLParagraphElement>
+> = {
+  className:
+    "text-sm text-gray-400 transition-colors hover:text-white cursor-default",
+  returnFunction() {
+    return "text-sm text-gray-400 transition-colors hover:text-white cursor-default";
+  },
+  jsxFunction({ description, ...props }) {
+    return (
+      <p
+        className="text-sm text-gray-400 transition-colors hover:text-white cursor-default"
+        {...props}
+      >
+        {description}
+      </p>
+    );
+  }
 };
 
-export default RellyShipDescription;
+export default DescriptionSet;

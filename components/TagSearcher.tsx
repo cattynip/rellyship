@@ -9,9 +9,10 @@ import RellyShipInput from "./RellyShipComponents/RellyShipInput";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import dynamic from "next/dynamic";
-import RellyShipDescription from "./RellyShipComponents/RellyShipDescription";
 import { AnimatePresence } from "framer-motion";
 import { motion } from "framer-motion";
+import DescriptionSet from "./RellyShipComponents/RellyShipDescription";
+import InputSet from "./RellyShipComponents/RellyShipInput";
 
 library.add(faXmark);
 
@@ -24,10 +25,10 @@ const FontAwesomeIcon = dynamic(
 );
 
 interface ITagsSearcherProps {
-  getContent: (tags: string[]) => void;
+  // getContent: (tags: string[]) => void;
 }
 
-const TagsSearcher = ({ getContent }: ITagsSearcherProps) => {
+const TagsSearcher = ({}: ITagsSearcherProps) => {
   const [tags, setTags] = useState<string[]>([]);
 
   const onInputChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,7 +64,7 @@ const TagsSearcher = ({ getContent }: ITagsSearcherProps) => {
   };
 
   useEffect(() => {
-    getContent(tags);
+    // getContent(tags);
   }, [tags]);
 
   const onXMarkCilck = async (event: MouseEvent<SVGSVGElement>) => {
@@ -89,12 +90,14 @@ const TagsSearcher = ({ getContent }: ITagsSearcherProps) => {
               <TagComponent content={tag} key={tagIdx} onClick={onXMarkCilck} />
             ))
           ) : (
-            <RellyShipDescription description="Type the name of the tag and press space bar..." />
+            <p className={DescriptionSet.className}>
+              Type the name of the tag and press space bar...
+            </p>
           )}
         </AnimatePresence>
       </ul>
       <div>
-        <RellyShipInput
+        <InputSet.jsxFunction
           placeholder="#Tags"
           id="tags"
           extraClassName="w-full rounded-none border-x-transparent border-b-transparent rounded-b-md"

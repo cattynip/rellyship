@@ -3,13 +3,11 @@ import { ChangeEvent, FormEvent, useState } from "react";
 
 // TODO: Make them dynamic import
 
-import UserSearcher from "@components/UserSearcher";
-import TagsSearcher from "@components/TagSearcher";
-import AskEditor from "@components/AskEditor";
 import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
-import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
-import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
-import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
+import LabelSet from "@components/RellyShipComponents/RellyShipLabel";
+import InputSet from "@components/RellyShipComponents/RellyShipInput";
+import { useForm } from "react-hook-form";
+import ButtonSet from "@components/RellyShipComponents/RellyShipButton";
 
 interface IAskForm {
   username?: string;
@@ -20,11 +18,14 @@ interface IAskForm {
 }
 
 const Ask: NextPage = () => {
-  const [formData, setFormData] = useState<IAskForm>({});
-  const [loading, _setLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<IAskForm>({});
 
-  const onValid = (event: FormEvent) => {
-    event.preventDefault();
+  const onValid = (handedForm: IAskForm) => {
+    console.log(handedForm);
 
     // TODO: Cehck fields
 
@@ -33,71 +34,78 @@ const Ask: NextPage = () => {
 
   return (
     <div>
-      <RellyShipHeading text="Ask" extraClassName="text-3xl" />
+      <h1 className="text-4xl font-extrabold">Ask</h1>
       <form
-        onSubmit={onValid}
+        onSubmit={handleSubmit(onValid)}
         className="border-t border-gray-400 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="question" required>
-            <span className="text-xl font-bold">Question</span>
-          </RellyShipLabel>
-          <RellyShipInput
+          <LabelSet.jsxFunction
+            labelContent="Question"
+            htmlFor="question"
+            required
+          />
+          <InputSet.jsxFunction
             placeholder="My question is that..."
             id="question"
-            extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                question: event.target.value
-              }))
-            }
+            isFormInput
+            minLength={3}
+            maxLength={40}
+            register={register("question", {
+              required: {
+                value: true,
+                message: "The quetion is a reuqired field."
+              },
+              minLength: {
+                value: 5,
+                message: "The question should be longer then 5 letters."
+              },
+              maxLength: {
+                value: 40,
+                message: "The question should be shorter than 40 letters."
+              }
+            })}
           />
-          <AskEditor
-            getContent={(content: string) =>
-              setFormData(prev => ({ ...prev, content: content }))
-            }
-            getSummary={(summary: string) =>
-              setFormData(prev => ({ ...prev, summary: summary }))
-            }
-          />
+          {/* <AskEditor */}
+          {/*   getContent={(content: string) => { */}
+          {/*     console.log(content); */}
+          {/*   }} */}
+          {/*   getSummary={(summary: string) => { */}
+          {/*     console.log(summary); */}
+          {/*   }} */}
+          {/* /> */}
         </div>
         <div>
-          <RellyShipLabel link="who" required>
-            <span className="text-xl font-bold">User</span>
-          </RellyShipLabel>
-          <UserSearcher
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                username: event.target.value
-              }))
-            }
-          />
+          <LabelSet.jsxFunction labelContent="User" htmlFor="who" required />
+          {/* <UserSearcher */}
+          {/*   onChange={(event: ChangeEvent<HTMLInputElement>) => { */}
+          {/*     // setFormData(prev => ({ */}
+          {/*     //   ...prev, */}
+          {/*     //   username: event.target.value */}
+          {/*     // })) */}
+          {/*     console.log(event); */}
+          {/*   }} */}
+          {/* /> */}
         </div>
         <div>
-          <RellyShipLabel
-            link="tags"
-            description="What tags would you like to tag on this ask?"
-          >
-            <span className="text-xl font-bold">Tags</span>
-          </RellyShipLabel>
-          <TagsSearcher
-            getContent={(tags: string[]) => {
-              setFormData(prev => ({
-                ...prev,
-                tags: tags
-              }));
-            }}
-          />
+          <LabelSet.jsxFunction labelContent="Tags" htmlFor="tags" required />
+          {/* <TagsSearcher */}
+          {/*   getContent={(tags: string[]) => { */}
+          {/*     console.log(tags); */}
+          {/*     // setFormData(prev => ({ */}
+          {/*     //   ...prev, */}
+          {/*     //   tags: tags */}
+          {/*     // })); */}
+          {/*   }} */}
+          {/* /> */}
         </div>
         <div className="flex items-center justify-center pt-6">
-          <RellyShipButton
+          <ButtonSet.jsxFunction
             content="Ask"
             mood="specially positive"
-            loading={loading}
+            loading={isSubmitting}
           />
         </div>
       </form>

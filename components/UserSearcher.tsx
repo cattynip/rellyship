@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import RellyShipInput from "./RellyShipComponents/RellyShipInput";
 import Image from "next/image";
 import UserAt from "./UserAt";
-import RellyShipDescription from "./RellyShipComponents/RellyShipDescription";
 import { IRellyShipInputTypeComponent } from "./RellyShipComponents/RellyShipComponent";
+import DescriptionSet from "./RellyShipComponents/RellyShipDescription";
 
 interface IUserSearcherProps {}
 
@@ -65,7 +65,7 @@ const UserSearcher = ({
       </div>
       <div className="w-full h-full flex flex-col items-center justify-center p-4 border border-gray-700 rounded-b-lg md:rounded-r-lg md:rounded-bl-none">
         {mode === "blank" ? (
-          <RellyShipDescription description="Enter an username" />
+          <p className={DescriptionSet.className}>Entter the username</p>
         ) : (
           <div>
             <span>sdlfjlask</span>

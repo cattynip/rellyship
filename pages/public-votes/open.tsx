@@ -8,10 +8,11 @@ import AnswerAmountInput from "@components/AnswerType/AnswerAmountInput";
 import AnswerSelectionInput from "@components/AnswerType/AnswerSelectionInput";
 import AnswerTypeTopBar from "@components/AnswerType/AnswerTypeTopBar";
 import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
-import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
-import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
-import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
+import LabelSet from "@components/RellyShipComponents/RellyShipLabel";
 import TagsSearcher from "@components/TagSearcher";
+import InputSet from "@components/RellyShipComponents/RellyShipInput";
+import { useForm } from "react-hook-form";
+import ButtonSet from "@components/RellyShipComponents/RellyShipButton";
 
 export type TVote = "answer" | "selection" | "amount";
 
@@ -32,7 +33,11 @@ interface IVoteForm {
 }
 
 const OpenPublicVote: NextPage = () => {
-  const [formData, setFormData] = useState<IVoteForm>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting }
+  } = useForm<IVoteForm>({});
 
   // When it sends an API, the body part will include this variables, depend on the `active` variable.
   const [selections, setSelections] = useState<TSelections>([]);
@@ -43,11 +48,10 @@ const OpenPublicVote: NextPage = () => {
     unit: "degress"
   });
 
-  const [loading, _setLoading] = useState<boolean>(false);
   const [active, setActive] = useState<TVote>("answer");
 
-  const onValid = (event: FormEvent) => {
-    event.preventDefault();
+  const onValid = (handedForm: IVoteForm) => {
+    console.log(handedForm);
 
     // TODO: Check fields
 
@@ -60,51 +64,70 @@ const OpenPublicVote: NextPage = () => {
 
   return (
     <div>
-      <RellyShipHeading text="Open a Public Vote" extraClassName="text-2xl" />
+      <h1 className="text-4xl font-extrabold">Open a Public Vote</h1>
       <form
-        onSubmit={onValid}
+        onSubmit={handleSubmit(onValid)}
         className="border-t border-gray-399 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="title" required>
-            <span className="text-xl font-bold">Title</span>
-          </RellyShipLabel>
-          <RellyShipInput
-            placeholder="My question is that..."
+          <LabelSet.jsxFunction labelContent="Title" htmlFor="title" required />
+          <InputSet.jsxFunction
+            placeholder="How do you think about...?"
             id="title"
             extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                title: event.target.value
-              }))
-            }
+            isFormInput
+            register={register("title", {
+              required: {
+                value: true,
+                message: "The title is a required field."
+              },
+              minLength: {
+                value: 3,
+                message: "The title should be longer than 3 letters."
+              },
+              maxLength: {
+                value: 40,
+                message: "The title should be longer than 40 letters."
+              }
+            })}
           />
         </div>
         <div>
-          <RellyShipLabel link="description">
-            <span className="text-xl font-bold">Description</span>
-          </RellyShipLabel>
-          <RellyShipInput
-            placeholder="This is a question..."
+          <LabelSet.jsxFunction
+            labelContent="Description"
+            htmlFor="description"
+          />
+          <InputSet.jsxFunction
+            placeholder="This vote is about..."
             id="description"
             extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                description: event.target.value
-              }))
-            }
+            isFormInput
+            register={register("description", {
+              required: {
+                value: true,
+                message: "The description is a required field."
+              },
+              minLength: {
+                value: 3,
+                message: "The description should be longer than 3 letters."
+              },
+              maxLength: {
+                value: 40,
+                message: "The description should be longer than 40 letters."
+              }
+            })}
           />
         </div>
         <div>
-          <RellyShipLabel link="answertype" required>
-            <span className="text-xl font-bold">Answer Type</span>
-          </RellyShipLabel>
+          <LabelSet.jsxFunction
+            labelContent="Type of Answers"
+            htmlFor="answertype"
+            required
+          />
           <div className="pb-1 pt-4 flex items-center justify-around">
             <AnswerTypeTopBar
               content="answer"
@@ -142,23 +165,14 @@ const OpenPublicVote: NextPage = () => {
           </div>
         </div>
         <div>
-          <RellyShipLabel link="tags">
-            <span className="text-xl font-bold">Tags</span>
-          </RellyShipLabel>
-          <TagsSearcher
-            getContent={(tags: string[]) => {
-              setFormData(prev => ({
-                ...prev,
-                tags: tags
-              }));
-            }}
-          />
+          <LabelSet.jsxFunction labelContent="Tags" htmlFor="tags" />
+          <TagsSearcher />
         </div>
         <div className="flex items-center justify-center pt-5">
-          <RellyShipButton
+          <ButtonSet.jsxFunction
             content="Open"
             mood="specially positive"
-            loading={loading}
+            loading={isSubmitting}
           />
         </div>
       </form>

@@ -1,51 +1,54 @@
-import { HTMLAttributes } from "react";
-import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
-import IRellyShipDescription from "@components/RellyShipComponents/RellyShipDescription";
+import IBasicClassName from "@libs/client/manageClasses";
+import DescriptionSet from "./RellyShipDescription";
+import { joinClass } from "./RellyShipComponent";
+import { HTMLAttributes, LabelHTMLAttributes } from "react";
 
-interface IRellyShipLabelProps extends IRellyShipComponent {
-  labelContent?: string;
-  description?: string;
-  children?: React.ReactNode;
-  required?: boolean;
-  link?: string;
-  reverse?: boolean;
-  narrower?: boolean;
-}
-
-const RellyShipLabel = ({
-  labelContent,
-  description,
-  children,
-  required,
-  link,
-  reverse,
-  narrower,
-  extraClassName,
-  ...props
-}: IRellyShipLabelProps & HTMLAttributes<HTMLLabelElement>) => {
-  return (
-    <label
-      className={joinClass([
-        "flex items-center justify-between",
-        extraClassName ? extraClassName : "",
-        reverse ? "flex-row-reverse" : "",
-        narrower ? "p-0" : "pb-4"
-      ])}
-      htmlFor={link ? link : undefined}
-      {...props}
-    >
-      {labelContent ? labelContent : children}
-      <div className="flex space-x-1.5">
-        {description ? (
-          <IRellyShipDescription
-            description={description}
-            extraClassName="hidden sm:block"
-          />
-        ) : null}
-        {required ? <span className="text-red-500">*</span> : null}
-      </div>
-    </label>
-  );
+const LabelSet: IBasicClassName<
+  {
+    reverse?: boolean;
+    narrower?: boolean;
+  },
+  {
+    labelContent: string;
+    description?: string;
+    required?: boolean;
+  } & LabelHTMLAttributes<HTMLLabelElement>
+> = {
+  className: "flex items-center justify-between text-xl font-bold",
+  returnFunction({ reverse, narrower }) {
+    return joinClass([
+      "flex items-center justify-between text-xl font-bold",
+      reverse ? "flex-row-reverse" : "",
+      narrower ? "p-0" : "pb-4"
+    ]);
+  },
+  jsxFunction({
+    reverse,
+    narrower,
+    labelContent,
+    description,
+    required,
+    ...props
+  }) {
+    return (
+      <label
+        className={joinClass([
+          "flex items-center justify-between",
+          reverse ? "flex-row-reverse" : "",
+          narrower ? "p-0" : "pb-4"
+        ])}
+        {...props}
+      >
+        <span className="text-xl font-bold">{labelContent}</span>
+        <div className="flex space-x-1.5">
+          {description && (
+            <p className={DescriptionSet.className}>{description}</p>
+          )}
+          {required && <span className="text-red-500">*</span>}
+        </div>
+      </label>
+    );
+  }
 };
 
-export default RellyShipLabel;
+export default LabelSet;
