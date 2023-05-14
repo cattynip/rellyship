@@ -13,9 +13,13 @@ model User {
   name                 String
   nickname             String                 @unique
   avatar               String?
+  // INFO: Many Offer (receiving)
   redCrown             Boolean                @default(false)
+  // INFO: Many Asks (receiving)
   greenCrown           Boolean                @default(false)
+  // INFO: Commenter (commenting)
   blueCrown            Boolean                @default(false)
+  // INFO: Popular
   yelloCrown           Boolean                @default(false)
   password             String
   email                String                 @unique

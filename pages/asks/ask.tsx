@@ -39,19 +39,6 @@ const Ask: NextPage = () => {
         className="border-t border-gray-400 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="who" required>
-            <span className="text-xl font-bold">User</span>
-          </RellyShipLabel>
-          <UserSearcher
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                username: event.target.value
-              }))
-            }
-          />
-        </div>
-        <div>
           <RellyShipLabel link="question" required>
             <span className="text-xl font-bold">Question</span>
           </RellyShipLabel>
@@ -74,6 +61,19 @@ const Ask: NextPage = () => {
             }
             getSummary={(summary: string) =>
               setFormData(prev => ({ ...prev, summary: summary }))
+            }
+          />
+        </div>
+        <div>
+          <RellyShipLabel link="who" required>
+            <span className="text-xl font-bold">User</span>
+          </RellyShipLabel>
+          <UserSearcher
+            onChange={(event: ChangeEvent<HTMLInputElement>) =>
+              setFormData(prev => ({
+                ...prev,
+                username: event.target.value
+              }))
             }
           />
         </div>
