@@ -1,22 +1,17 @@
 import joinClass from "@libs/client/joinClasses";
-import { HTMLAttributes, HTMLInputTypeAttribute } from "react";
+import { HTMLInputTypeAttribute, InputHTMLAttributes } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface IRellyShipComponent {
   extraClassName?: React.ComponentProps<"div">["className"];
 }
 
-export interface IRellyShipInputTypeComponent<T = HTMLInputElement>
-  extends IRellyShipComponent,
-    React.DetailedHTMLProps<
-      React.InputHTMLAttributes<HTMLInputElement>,
-      HTMLInputElement
-    > {
+export interface IRellyShipInputTypeComponent extends IRellyShipComponent {
   error?: boolean;
   wider?: boolean;
-  narrow?: boolean;
+  narrower?: boolean;
   removeHoverAnimation?: boolean;
-  link?: string;
-  type?: HTMLInputTypeAttribute;
+  register?: UseFormRegisterReturn;
 }
 
 export { joinClass };

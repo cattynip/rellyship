@@ -1,24 +1,19 @@
-import Link from "next/link";
+import Link, { LinkProps } from "next/link";
 import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
-import { HTMLAttributeAnchorTarget, HTMLAttributes } from "react";
-import { UrlObject } from "url";
 
 interface IRellyShipInputProps extends IRellyShipComponent {
-  linkTo: string | UrlObject;
-  target?: HTMLAttributeAnchorTarget;
   colorDecoration?: boolean;
   children: React.ReactNode;
 }
 
 const RellyShipAnchor = ({
-  linkTo,
   colorDecoration,
   children,
   extraClassName,
   ...props
-}: IRellyShipInputProps & HTMLAttributes<HTMLAnchorElement>) => {
+}: IRellyShipInputProps & LinkProps) => {
   return (
-    <Link href={linkTo} passHref legacyBehavior {...props}>
+    <Link passHref legacyBehavior {...props}>
       <a
         className={joinClass([
           "cursor-pointer",
