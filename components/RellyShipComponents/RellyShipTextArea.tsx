@@ -17,6 +17,7 @@ const RellyShipTextArea = ({
   wider,
   narrower,
   extraClassName,
+  register,
   ...props
 }: IRellyShipTextAreaProps) => {
   return (
@@ -28,6 +29,7 @@ const RellyShipTextArea = ({
         narrower ? "p-0" : "px-3 pt-3 pb-2.5",
         extraClassName ? extraClassName : ""
       ])}
+      {...register}
       {...props}
     />
   );

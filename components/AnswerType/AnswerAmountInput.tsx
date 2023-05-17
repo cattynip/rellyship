@@ -53,15 +53,21 @@ const AnswerAmountInput = ({ getContent }: IAnswerAmountInput) => {
       <div>
         <div className="grid grid-cols-2">
           <div className="flex flex-col items-start justify-center pb-3">
-            <RellyShipLabel link="min" narrower extraClassName="font-semibold">
-              Min
-            </RellyShipLabel>
+            <RellyShipLabel
+              htmlFor="min"
+              labelContent="Min"
+              narrower
+              isUnbolded
+            />
             <FontAwesomeIcon icon={"caret-down"} className="pt-0.5" />
           </div>
           <div className="flex flex-col items-end justify-center pb-3">
-            <RellyShipLabel link="max" narrower extraClassName="font-semibold">
-              Max
-            </RellyShipLabel>
+            <RellyShipLabel
+              htmlFor="max"
+              labelContent="Max"
+              narrower
+              isUnbolded
+            />
             <FontAwesomeIcon icon={"caret-down"} className="pt-0.5" />
           </div>
         </div>
@@ -69,7 +75,8 @@ const AnswerAmountInput = ({ getContent }: IAnswerAmountInput) => {
       </div>
       <div className="flex items-center justify-between">
         <RellyShipInput
-          link="min"
+          id="min"
+          placeholder="1"
           type="number"
           removeHoverAnimation
           defaultValue={amount.smallest}
@@ -82,7 +89,8 @@ const AnswerAmountInput = ({ getContent }: IAnswerAmountInput) => {
           }
         />
         <RellyShipInput
-          link="max"
+          id="max"
+          placeholder="20"
           type="number"
           removeHoverAnimation
           defaultValue={amount.biggest}
@@ -97,10 +105,16 @@ const AnswerAmountInput = ({ getContent }: IAnswerAmountInput) => {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
         <div>
-          <RellyShipLabel required>Interval</RellyShipLabel>
+          <RellyShipLabel
+            labelContent="Interval"
+            htmlFor="interval"
+            isUnbolded
+            required
+          />
           <RellyShipInput
             extraClassName="w-full"
             removeHoverAnimation
+            id="interval"
             defaultValue={amount.interval}
             type="number"
             placeholder="20"
@@ -113,11 +127,17 @@ const AnswerAmountInput = ({ getContent }: IAnswerAmountInput) => {
           />
         </div>
         <div>
-          <RellyShipLabel required>Unit</RellyShipLabel>
+          <RellyShipLabel
+            labelContent="Unit"
+            htmlFor="unit"
+            isUnbolded
+            required
+          />
           <RellyShipInput
             extraClassName="w-full"
             removeHoverAnimation
             defaultValue={amount.unit}
+            id="unit"
             placeholder="The number of age"
             maxLength={20}
             onChange={(event: ChangeEvent<HTMLInputElement>) =>
