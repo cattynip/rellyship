@@ -1,5 +1,4 @@
 import type { NextPage } from "next";
-import { ChangeEvent, FormEvent, useState } from "react";
 
 // TODO: Make them dynamic import
 
@@ -8,23 +7,32 @@ import TagsSearcher from "@components/TagSearcher";
 import AskEditor from "@components/AskEditor";
 import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
 import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
-import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
+import RellyShipInput, {
+  inputRegisterObj
+} from "@components/RellyShipComponents/RellyShipInput";
 import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
+import { useForm } from "react-hook-form";
 
 interface IAskForm {
-  username?: string;
-  tags?: string[];
-  question?: string;
-  content?: string;
-  summary?: string;
+  question: string;
+  content: string;
+  username: string;
+  tags: string[];
 }
 
 const Ask: NextPage = () => {
-  const [formData, setFormData] = useState<IAskForm>({});
-  const [loading, _setLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue
+  } = useForm<IAskForm>({
+    mode: "onSubmit",
+    reValidateMode: "onBlur"
+  });
 
-  const onValid = (event: FormEvent) => {
-    event.preventDefault();
+  const onValid = (handedForm: IAskForm) => {
+    console.log(handedForm);
 
     // TODO: Cehck fields
 
@@ -35,69 +43,54 @@ const Ask: NextPage = () => {
     <div>
       <RellyShipHeading text="Ask" extraClassName="text-3xl" />
       <form
-        onSubmit={onValid}
+        onSubmit={handleSubmit(onValid)}
         className="border-t border-gray-400 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="question" required>
-            <span className="text-xl font-bold">Question</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="Question" htmlFor="question" required />
           <RellyShipInput
             placeholder="My question is that..."
             id="question"
             extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                question: event.target.value
-              }))
-            }
+            minLength={5}
+            maxLength={40}
+            register={register("question", inputRegisterObj("question"))}
           />
           <AskEditor
-            getContent={(content: string) =>
-              setFormData(prev => ({ ...prev, content: content }))
-            }
-            getSummary={(summary: string) =>
-              setFormData(prev => ({ ...prev, summary: summary }))
-            }
+            register={register(
+              "content",
+              inputRegisterObj("content", { minLength: 5, maxLength: 300 })
+            )}
           />
         </div>
         <div>
-          <RellyShipLabel link="who" required>
-            <span className="text-xl font-bold">User</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="User" htmlFor="who" required />
           <UserSearcher
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                username: event.target.value
-              }))
-            }
+            minLength={1}
+            maxLength={10}
+            register={register(
+              "username",
+              inputRegisterObj("username", { minLength: 1, maxLength: 10 })
+            )}
           />
         </div>
         <div>
           <RellyShipLabel
-            link="tags"
+            labelContent="Tags"
+            htmlFor="tags"
             description="What tags would you like to tag on this ask?"
-          >
-            <span className="text-xl font-bold">Tags</span>
-          </RellyShipLabel>
+          />
           <TagsSearcher
-            getContent={(tags: string[]) => {
-              setFormData(prev => ({
-                ...prev,
-                tags: tags
-              }));
-            }}
+            getContent={(tags: string[]) => setValue("tags", tags)}
           />
         </div>
         <div className="flex items-center justify-center pt-6">
           <RellyShipButton
             content="Ask"
             mood="specially positive"
-            loading={loading}
+            loading={isSubmitting}
           />
         </div>
       </form>
