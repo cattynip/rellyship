@@ -137,7 +137,7 @@ const HeaderElement = ({
       ])}
     >
       {linkTo ? (
-        <RellyShipAnchor linkTo={linkTo} extraClassName="px-4 py-3">
+        <RellyShipAnchor href={linkTo} extraClassName="px-4 py-3">
           {text ? <span>{text}</span> : children}
         </RellyShipAnchor>
       ) : (

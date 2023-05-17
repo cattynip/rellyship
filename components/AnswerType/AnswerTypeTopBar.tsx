@@ -1,6 +1,7 @@
 import { TVote } from "@pages/public-votes/open";
 import { AnimatePresence, motion } from "framer-motion";
 import { HTMLAttributes, useState } from "react";
+import { UseFormRegisterReturn } from "react-hook-form";
 
 interface IAnswerTypeTopBar {
   content: TVote;
@@ -15,7 +16,7 @@ const AnswerTypeTopBar = ({
   const isMatched = content === active;
 
   return (
-    <button className="relative py-2 px-2" {...props}>
+    <button className="relative py-2 px-2" value={content} {...props}>
       <span>
         {content === "answer"
           ? "Answers"

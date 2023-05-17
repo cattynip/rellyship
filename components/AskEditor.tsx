@@ -7,32 +7,15 @@ import React from "react";
 import Tab from "./AskEditor/tabs";
 import Editor from "./AskEditor/editor";
 import Previewer from "./AskEditor/previewer";
-import Summary from "./AskEditor/summary";
 import { AnimatePresence } from "framer-motion";
 
-interface IAskEditorProps extends IRellyShipInputTypeComponent {
-  getContent: (content: string) => void;
-  getSummary: (summary: string) => void;
-}
+interface IAskEditorProps extends IRellyShipInputTypeComponent {}
 
 export type EditorModeType = "edit" | "preview" | "summary";
 
-const AskEditor = ({ getContent, getSummary }: IAskEditorProps) => {
+const AskEditor = ({ ...props }: IAskEditorProps) => {
   const [editorMode, setEditorMode] = useState<EditorModeType>("edit");
   const [content, setContent] = useState<string>("");
-  const [summary, setSummary] = useState<string>("");
-
-  const saveContent = (content: string) => {
-    setContent(content);
-  };
-
-  useEffect(() => {
-    getContent(content);
-  }, [content]);
-
-  useEffect(() => {
-    getSummary(summary);
-  }, [summary]);
 
   return (
     <div className="border rounded-md mt-2.5 border-gray-700 hover:border-white transition-colors">
@@ -48,20 +31,14 @@ const AskEditor = ({ getContent, getSummary }: IAskEditorProps) => {
             active={editorMode}
             onClick={() => setEditorMode("preview")}
           />
-          <Tab
-            tabName="summary"
-            active={editorMode}
-            onClick={() => setEditorMode("summary")}
-          />
         </ul>
       </div>
       <div>
         <AnimatePresence>
           {editorMode === "edit" && (
-            <Editor content={content} saveContent={saveContent} />
+            <Editor defaultContent={content} {...props} />
           )}
           {editorMode === "preview" && <Previewer content={content} />}
-          {editorMode === "summary" && <Summary content={content} />}
         </AnimatePresence>
       </div>
     </div>

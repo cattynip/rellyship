@@ -4,21 +4,18 @@ import { IRellyShipInputTypeComponent } from "@components/RellyShipComponents/Re
 import { ChangeEvent } from "react";
 
 interface ITextEditorProps extends IRellyShipInputTypeComponent {
-  content: string;
-  saveContent: (ctx: string) => void;
+  defaultContent: string;
 }
 
-const Editor = ({ content, saveContent }: ITextEditorProps) => {
+const Editor = ({ defaultContent, ...props }: ITextEditorProps) => {
   return (
     <EditorContent>
       <div className="flex">
         <RellyShipTextArea
-          defaultValue={content}
-          onChange={(event: ChangeEvent<HTMLTextAreaElement>) => {
-            saveContent(event.currentTarget.value);
-          }}
+          defaultValue={defaultContent}
           extraClassName="border-none m-0"
-          narrow
+          narrower
+          {...props}
         />
       </div>
     </EditorContent>

@@ -1,17 +1,47 @@
+import { RegisterOptions } from "react-hook-form";
 import { IRellyShipInputTypeComponent, joinClass } from "./RellyShipComponent";
+import { InputHTMLAttributes } from "react";
 
 interface IRellyShipInputProps extends IRellyShipInputTypeComponent {}
+
+export const inputRegisterObj = (
+  fieldName: string,
+  overrideDefaultValue?: {
+    minLength?: number;
+    maxLength?: number;
+  },
+  override?: RegisterOptions
+): RegisterOptions => ({
+  required: {
+    value: true,
+    message: `The ${fieldName} is a required field.`
+  },
+  minLength: {
+    value: overrideDefaultValue?.minLength ? overrideDefaultValue.minLength : 5,
+    message: `The ${fieldName} should be longer than ${
+      overrideDefaultValue?.minLength ? overrideDefaultValue.minLength : 5
+    } letters.`
+  },
+  maxLength: {
+    value: overrideDefaultValue?.maxLength
+      ? overrideDefaultValue.maxLength
+      : 40,
+    message: `The ${fieldName} should be shorter than ${
+      overrideDefaultValue?.maxLength ? overrideDefaultValue.maxLength : 40
+    } letters.`
+  },
+  ...override
+});
 
 const RellyShipInput = ({
   error,
   wider,
-  narrow,
-  removeHoverAnimation = false,
-  link,
+  narrower: narrow,
+  removeHoverAnimation,
+  register,
   extraClassName,
-  type,
   ...props
-}: IRellyShipInputProps) => {
+}: IRellyShipInputProps & InputHTMLAttributes<HTMLInputElement>) => {
   return (
     <input
       className={joinClass([
@@ -21,8 +51,7 @@ const RellyShipInput = ({
         wider ? "py-2" : "py-1",
         extraClassName ? extraClassName : ""
       ])}
-      id={link ? link : ""}
-      type={type ? type : "text"}
+      {...register}
       {...props}
     />
   );

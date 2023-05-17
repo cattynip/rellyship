@@ -1,31 +1,47 @@
 import AskEditor from "@components/AskEditor";
 import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
 import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
-import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
+import RellyShipInput, {
+  inputRegisterObj
+} from "@components/RellyShipComponents/RellyShipInput";
 import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
 import TagsSearcher from "@components/TagSearcher";
 import UserSearcher from "@components/UserSearcher";
 import { NextPage } from "next";
 import { ChangeEvent, FormEvent, useState } from "react";
+import { useForm } from "react-hook-form";
+
+interface IOfferForm {
+  question: string;
+  content: string;
+  username: string;
+  tags: string[];
+}
 
 const CreateOffer: NextPage = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue
+  } = useForm<IOfferForm>({
+    mode: "onSubmit",
+    reValidateMode: "onBlur"
+  });
 
-  const onValid = (event: FormEvent) => {
-    console.log(event);
+  const onValid = (handedForm: IOfferForm) => {
+    console.log(handedForm);
   };
 
   return (
     <div>
       <RellyShipHeading text="Make an Offer" extraClassName="text-2xl" />
       <form
-        onSubmit={onValid}
+        onSubmit={handleSubmit(onValid)}
         className="border-t border-gray-399 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="question" required>
-            <span className="text-xl font-bold">Offer</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="Offer" htmlFor="question" required />
           <RellyShipInput
             // TODO: Replace `@` to the username
             placeholder="This is an offer from @"
@@ -33,59 +49,34 @@ const CreateOffer: NextPage = () => {
             extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={
-              (event: ChangeEvent<HTMLInputElement>) => console.log(event)
-              // setFormData(prev => ({
-              //   ...prev,
-              //   question: event.target.value
-              // }))
-            }
+            register={register("question", inputRegisterObj("question"))}
           />
-          <AskEditor
-            getContent={
-              (content: string) => console.log(content)
-              // setFormData(prev => ({ ...prev, content: content }))
-            }
-            getSummary={
-              (summary: string) => console.log(summary)
-              // setFormData(prev => ({ ...prev, summary: summary }))
-            }
-          />
+          <AskEditor />
         </div>
         <div>
           {/* TODO: the user can search the user, who has a popular crown(the yellow one) */}
-          <RellyShipLabel link="who" required>
-            <span className="text-xl font-bold">User</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="User" htmlFor="who" required />
           <UserSearcher
-            onChange={
-              (event: ChangeEvent<HTMLInputElement>) => console.log(event)
-              // setFormData(prev => ({
-              //   ...prev,
-              //   username: event.target.value
-              // }))
-            }
+            register={register(
+              "username",
+              inputRegisterObj("username", { minLength: 1, maxLength: 10 })
+            )}
           />
         </div>
 
         <div>
-          <RellyShipLabel link="tags">
+          <RellyShipLabel labelContent="Tags" htmlFor="tags">
             <span className="text-xl font-bold">Tags</span>
           </RellyShipLabel>
           <TagsSearcher
-            getContent={(tags: string[]) => {
-              // setFormData(prev => ({
-              //   ...prev,
-              //   tags: tags
-              // }));
-            }}
+            getContent={(tags: string[]) => setValue("tags", tags)}
           />
         </div>
         <div className="flex items-center justify-center pt-5">
           <RellyShipButton
             content="Open"
             mood="specially positive"
-            loading={loading}
+            loading={isSubmitting}
           />
         </div>
       </form>

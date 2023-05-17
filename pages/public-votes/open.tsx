@@ -1,6 +1,6 @@
 import { AnimatePresence } from "framer-motion";
 import type { NextPage } from "next";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { MouseEvent, useState } from "react";
 
 // TODO: Make them dynamic import
 
@@ -9,9 +9,12 @@ import AnswerSelectionInput from "@components/AnswerType/AnswerSelectionInput";
 import AnswerTypeTopBar from "@components/AnswerType/AnswerTypeTopBar";
 import RellyShipButton from "@components/RellyShipComponents/RellyShipButton";
 import RellyShipHeading from "@components/RellyShipComponents/RellyShipHeadings";
-import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
+import RellyShipInput, {
+  inputRegisterObj
+} from "@components/RellyShipComponents/RellyShipInput";
 import RellyShipLabel from "@components/RellyShipComponents/RellyShipLabel";
 import TagsSearcher from "@components/TagSearcher";
+import { useForm } from "react-hook-form";
 
 export type TVote = "answer" | "selection" | "amount";
 
@@ -23,31 +26,43 @@ export type TAmount = {
   interval: number;
   unit: string;
 };
+export type TAnswerSheet = TSelections | TAmount;
 
 interface IVoteForm {
-  title?: string;
-  description?: string;
-  type?: TVote;
-  tags?: string[];
+  title: string;
+  description: string;
+  answerType: TVote;
+  answerSheet: TAnswerSheet;
+  tags: string[];
 }
 
 const OpenPublicVote: NextPage = () => {
-  const [formData, setFormData] = useState<IVoteForm>({});
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setValue
+  } = useForm<IVoteForm>({
+    mode: "onSubmit",
+    reValidateMode: "onBlur",
+    defaultValues: { answerType: "answer" }
+  });
 
-  // When it sends an API, the body part will include this variables, depend on the `active` variable.
-  const [selections, setSelections] = useState<TSelections>([]);
-  const [amount, setAmount] = useState<TAmount>({
+  // When it sends an API, the body part will include these variables, depend on the `active` variable.
+  const [_selections, setSelections] = useState<TSelections>([]);
+  const [_amount, setAmount] = useState<TAmount>({
     biggest: 100,
     smallest: 0,
     interval: 20,
-    unit: "degress"
+    unit: "degrees"
   });
 
-  const [loading, _setLoading] = useState<boolean>(false);
   const [active, setActive] = useState<TVote>("answer");
 
-  const onValid = (event: FormEvent) => {
-    event.preventDefault();
+  const onValid = (handedForm: IVoteForm) => {
+    console.log(handedForm);
+
+    // TODO: Add answers || selections || amount answer sheet to the object.
 
     // TODO: Check fields
 
@@ -62,64 +77,67 @@ const OpenPublicVote: NextPage = () => {
     <div>
       <RellyShipHeading text="Open a Public Vote" extraClassName="text-2xl" />
       <form
-        onSubmit={onValid}
+        onSubmit={handleSubmit(onValid)}
         className="border-t border-gray-399 mt-5 pt-5 space-y-4"
       >
         <div>
-          <RellyShipLabel link="title" required>
-            <span className="text-xl font-bold">Title</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="Title" htmlFor="title" required />
           <RellyShipInput
             placeholder="My question is that..."
             id="title"
             extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                title: event.target.value
-              }))
-            }
+            register={register("title", inputRegisterObj("title"))}
           />
         </div>
         <div>
-          <RellyShipLabel link="description">
-            <span className="text-xl font-bold">Description</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="Description" htmlFor="description" />
           <RellyShipInput
             placeholder="This is a question..."
             id="description"
             extraClassName="w-full"
             removeHoverAnimation
             wider
-            onChange={(event: ChangeEvent<HTMLInputElement>) =>
-              setFormData(prev => ({
-                ...prev,
-                description: event.target.value
-              }))
-            }
+            register={register(
+              "description",
+              inputRegisterObj(
+                "description",
+                { minLength: 1, maxLength: 60 },
+                { required: false }
+              )
+            )}
           />
         </div>
         <div>
-          <RellyShipLabel link="answertype" required>
-            <span className="text-xl font-bold">Answer Type</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="Type of Answers" required />
           <div className="pb-1 pt-4 flex items-center justify-around">
             <AnswerTypeTopBar
               content="answer"
               active={active}
-              onClick={() => onTopBarClick("answer")}
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.preventDefault();
+                onTopBarClick("answer");
+                setValue("answerType", "answer");
+              }}
             />
             <AnswerTypeTopBar
               content="selection"
               active={active}
-              onClick={() => onTopBarClick("selection")}
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.preventDefault();
+                onTopBarClick("selection");
+                setValue("answerType", "selection");
+              }}
             />
             <AnswerTypeTopBar
               content="amount"
               active={active}
-              onClick={() => onTopBarClick("amount")}
+              onClick={(event: MouseEvent<HTMLButtonElement>) => {
+                event.preventDefault();
+                onTopBarClick("amount");
+                setValue("answerType", "amount");
+              }}
             />
           </div>
           <div className="pt-4">
@@ -128,13 +146,15 @@ const OpenPublicVote: NextPage = () => {
                 <AnswerSelectionInput
                   getContent={(selections: TSelections) => {
                     setSelections(selections);
+                    setValue("answerSheet", selections);
                   }}
                 />
               )}
               {active === "amount" && (
                 <AnswerAmountInput
-                  getContent={content => {
+                  getContent={(content: TAmount) => {
                     setAmount(content);
+                    setValue("answerSheet", content);
                   }}
                 />
               )}
@@ -142,23 +162,16 @@ const OpenPublicVote: NextPage = () => {
           </div>
         </div>
         <div>
-          <RellyShipLabel link="tags">
-            <span className="text-xl font-bold">Tags</span>
-          </RellyShipLabel>
+          <RellyShipLabel labelContent="Tags" htmlFor="tags" />
           <TagsSearcher
-            getContent={(tags: string[]) => {
-              setFormData(prev => ({
-                ...prev,
-                tags: tags
-              }));
-            }}
+            getContent={(tags: string[]) => setValue("tags", tags)}
           />
         </div>
         <div className="flex items-center justify-center pt-5">
           <RellyShipButton
             content="Open"
             mood="specially positive"
-            loading={loading}
+            loading={isSubmitting}
           />
         </div>
       </form>

@@ -1,28 +1,26 @@
-import { HTMLAttributes } from "react";
+import { HTMLAttributes, LabelHTMLAttributes } from "react";
 import IRellyShipComponent, { joinClass } from "./RellyShipComponent";
 import IRellyShipDescription from "@components/RellyShipComponents/RellyShipDescription";
 
 interface IRellyShipLabelProps extends IRellyShipComponent {
-  labelContent?: string;
+  labelContent: string;
   description?: string;
-  children?: React.ReactNode;
   required?: boolean;
-  link?: string;
   reverse?: boolean;
   narrower?: boolean;
+  isUnbolded?: boolean;
 }
 
 const RellyShipLabel = ({
   labelContent,
   description,
-  children,
   required,
-  link,
   reverse,
   narrower,
+  isUnbolded,
   extraClassName,
   ...props
-}: IRellyShipLabelProps & HTMLAttributes<HTMLLabelElement>) => {
+}: IRellyShipLabelProps & LabelHTMLAttributes<HTMLLabelElement>) => {
   return (
     <label
       className={joinClass([
@@ -31,10 +29,13 @@ const RellyShipLabel = ({
         reverse ? "flex-row-reverse" : "",
         narrower ? "p-0" : "pb-4"
       ])}
-      htmlFor={link ? link : undefined}
       {...props}
     >
-      {labelContent ? labelContent : children}
+      <span
+        className={isUnbolded ? "text-lg font-medium" : "text-xl font-bold"}
+      >
+        {labelContent}
+      </span>
       <div className="flex space-x-1.5">
         {description ? (
           <IRellyShipDescription

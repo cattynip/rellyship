@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { InputHTMLAttributes, useEffect, useState } from "react";
 import RellyShipInput from "./RellyShipComponents/RellyShipInput";
 import Image from "next/image";
 import UserAt from "./UserAt";
@@ -33,7 +33,9 @@ interface IUserSearcherModeProps {
 
 const UserSearcher = ({
   ...props
-}: IUserSearcherProps & IRellyShipInputTypeComponent) => {
+}: IUserSearcherProps &
+  IRellyShipInputTypeComponent &
+  InputHTMLAttributes<HTMLInputElement>) => {
   const [mode, setMode] = useState<UserSearcherMode>("blank");
 
   useEffect(() => {
@@ -67,6 +69,7 @@ const UserSearcher = ({
         {mode === "blank" ? (
           <RellyShipDescription description="Enter an username" />
         ) : (
+          // TODO: This screen will be showing the list of the users, then after selecting someone, it will be shoing the basic information about him/her
           <div>
             <span>sdlfjlask</span>
           </div>
