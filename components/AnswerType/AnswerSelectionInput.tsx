@@ -5,7 +5,6 @@ import dynamic from "next/dynamic";
 import { AnimatePresence, motion } from "framer-motion";
 import RellyShipInput from "@components/RellyShipComponents/RellyShipInput";
 import { ChangeEvent, FocusEvent, useEffect, useState } from "react";
-import { isCustomErrorPage } from "next/dist/build/utils";
 
 library.add(faPlus);
 

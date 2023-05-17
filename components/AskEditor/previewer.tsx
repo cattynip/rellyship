@@ -7,7 +7,6 @@ import Heading from "@components/RellyShipMarkdown/Headings";
 import Ol from "@components/RellyShipMarkdown/Ols";
 import Ul from "@components/RellyShipMarkdown/Uls";
 import Markdown from "markdown-to-jsx";
-import Summary from "./summary";
 import Quote from "@components/RellyShipMarkdown/Quote";
 import Strong from "@components/RellyShipMarkdown/Strong";
 import Anchor from "@components/RellyShipMarkdown/Anchor";
@@ -76,9 +75,6 @@ const Previewer = ({ content }: IPreviewerProps) => {
               },
               pre: {
                 component: Codeblock
-              },
-              details: {
-                component: Summary
               },
               blockquote: {
                 component: Quote
